@@ -11,6 +11,10 @@ namespace EldenRing.NT
 
         public WeaponItem currentWeaponBeingUsed;
 
+        [Header("FLAGS")]
+        public bool canComboWithMainHandWeapon = false;     //  RIGHT HAND
+        //public bool canComboWithOffHandWeapon = false;    //  LEFT HAND
+
         protected override void Awake()
         {
             base.Awake();
@@ -50,6 +54,16 @@ namespace EldenRing.NT
             }
 
             player.playerNetworkManager.currentStamina.Value -= Mathf.RoundToInt(staminaDeducted);
+        }
+
+        public override void SetTarget(CharacterManager newTarget)
+        {
+            base.SetTarget(newTarget);
+
+            if (player.IsOwner)
+            {
+                PlayerCamera.instance.SetLockCameraHeight();
+            }
         }
     }
 }

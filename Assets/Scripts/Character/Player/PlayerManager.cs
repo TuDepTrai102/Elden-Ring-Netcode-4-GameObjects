@@ -8,10 +8,6 @@ namespace EldenRing.NT
 {
     public class PlayerManager : CharacterManager
     {
-        [Header("DEBUG MENU")]
-        [SerializeField] bool respawnCharacter = false;
-        [SerializeField] bool switchRightWeapon = false;
-
         [HideInInspector] public PlayerAnimatorManager playerAnimatorManager;
         [HideInInspector] public PlayerLocomotionManager playerLocomotionManager;
         [HideInInspector] public PlayerNetworkManager playerNetworkManager;
@@ -47,8 +43,6 @@ namespace EldenRing.NT
 
             //  REGEN STAMINA
             playerStatsManager.RegenerateStamina();
-
-            DebugMenu();
         }
 
         protected override void LateUpdate()
@@ -64,6 +58,7 @@ namespace EldenRing.NT
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
+
             NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnectedCallback;
 
             //  IF THIS IS THE PLAYER OBJECT OWNED BY THIS CLIENT
@@ -86,10 +81,17 @@ namespace EldenRing.NT
             //  STATS
             playerNetworkManager.currentHealth.OnValueChanged += playerNetworkManager.CheckHP;
 
+            //  LOCK ON
+            playerNetworkManager.isLockedOn.OnValueChanged += playerNetworkManager.OnIsLockOnChanged;
+            //playerNetworkManager.currentTargetNetworkObjectID.OnValueChanged += playerNetworkManager.OnLockOnTargetIDChange;
+
             //  EQUIPMENT
             playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChange;
             playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChange;
             playerNetworkManager.currentWeaponBeingUsed.OnValueChanged += playerNetworkManager.OnCurrentWeaponBeingUsedIDChange;
+
+            //  FLAGS
+            playerNetworkManager.isChargingAttack.OnValueChanged += playerNetworkManager.OnIsChargingAttackChanged;
 
             //  UPON CONNECTING, IF WE ARE THE OWNER OF THIS CHARACTER, BUT WE ARE NOT THE SERVER, RELOAD OUR CHARACTER DATA TO THIS NEWLY INSTANTIATED CHARACTER
             //  WE DONT RUN THIS IF WE ARE THE SERVER, BECAUSE SINCE THEY ARE THE HOST, THEY ARE ALREADY LOADED IN AND DON'T NEED TO RELOAD THEIR DATA
@@ -97,6 +99,41 @@ namespace EldenRing.NT
             {
                 LoadGameDataFromCurrentCharacterData(ref WorldSaveGameManager.instance.currentCharacterData);
             }
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+
+            NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnectedCallback;
+
+            //  IF THIS IS THE PLAYER OBJECT OWNED BY THIS CLIENT
+            if (IsOwner)
+            {
+                //  UPDATE THE TOTAL AMOUNT OF HEALTH OR STAMINA WHEN THE STAT LINKED TO EITHER CHANGE
+                playerNetworkManager.vitality.OnValueChanged -= playerNetworkManager.SetNewMaxHealthValue;
+                playerNetworkManager.endurance.OnValueChanged -= playerNetworkManager.SetNewMaxStaminaValue;
+
+                //  UPDATES UI STAT BAR WHEN A STAT CHANGES (HEALTH, STAMINA, FOCUS POINTS (MANA), ETC...ETC...)
+                playerNetworkManager.currentHealth.OnValueChanged -= PlayerUIManager.instance.playerUIHudManager.SetNewHealthValue;
+                playerNetworkManager.currentStamina.OnValueChanged -= PlayerUIManager.instance.playerUIHudManager.SetNewStaminaValue;
+                playerNetworkManager.currentStamina.OnValueChanged -= playerStatsManager.ResetStaminaRegenTimer;
+            }
+
+            //  STATS
+            playerNetworkManager.currentHealth.OnValueChanged -= playerNetworkManager.CheckHP;
+
+            //  LOCK ON
+            playerNetworkManager.isLockedOn.OnValueChanged -= playerNetworkManager.OnIsLockOnChanged;
+            //playerNetworkManager.currentTargetNetworkObjectID.OnValueChanged += playerNetworkManager.OnLockOnTargetIDChange;
+
+            //  EQUIPMENT
+            playerNetworkManager.currentRightHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentRightHandWeaponIDChange;
+            playerNetworkManager.currentLeftHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentLeftHandWeaponIDChange;
+            playerNetworkManager.currentWeaponBeingUsed.OnValueChanged -= playerNetworkManager.OnCurrentWeaponBeingUsedIDChange;
+
+            //  FLAGS
+            playerNetworkManager.isChargingAttack.OnValueChanged -= playerNetworkManager.OnIsChargingAttackChanged;
         }
 
         private void OnClientConnectedCallback(ulong clientID)
@@ -135,6 +172,7 @@ namespace EldenRing.NT
 
             if (IsOwner)
             {
+                isDead.Value = false;
                 playerNetworkManager.currentHealth.Value = playerNetworkManager.maxHealth.Value;
                 playerNetworkManager.currentStamina.Value = playerNetworkManager.maxStamina.Value;
                 //  RESTORE FOCUS POINTS
@@ -188,21 +226,11 @@ namespace EldenRing.NT
             playerNetworkManager.OnCurrentLeftHandWeaponIDChange(0, playerNetworkManager.currentLeftHandWeaponID.Value);
         
             //  ARMOR
-        }
 
-        //  DEBUG DELETE LATER
-        private void DebugMenu()
-        {
-            if (respawnCharacter)
+            //  LOCK ON
+            if (playerNetworkManager.isLockedOn.Value)
             {
-                respawnCharacter = false;
-                ReviceCharacter();
-            }
-
-            if (switchRightWeapon)
-            {
-                switchRightWeapon = false;
-                playerEquipmentManager.SwitchRightWeapon();
+                playerNetworkManager.OnLockOnTargetChange(0, playerNetworkManager.currentTargetNetworkObjectID.Value);
             }
         }
     }

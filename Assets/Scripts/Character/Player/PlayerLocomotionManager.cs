@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace EldenRing.NT
@@ -56,9 +57,18 @@ namespace EldenRing.NT
                 moveAmount = player.characterNetworkManager.moveAmount.Value;
 
                 //  IF NOT LOCKED ON, PASS MOVE AMOUNT
-                player.playerAnimatorManager.UpdateAnimatorMovementParameters(0, moveAmount, player.playerNetworkManager.isSprinting.Value);
-
+                if (!player.playerNetworkManager.isLockedOn.Value ||
+                    player.playerNetworkManager.isSprinting.Value)
+                {
+                    player.playerAnimatorManager.UpdateAnimatorMovementParameters
+                        (0, moveAmount, player.playerNetworkManager.isSprinting.Value);
+                }
                 //  IF LOCKED ON, PASS HORIZONTAL AND VERTICAL
+                else
+                {
+                    player.playerAnimatorManager.UpdateAnimatorMovementParameters
+                        (horizontalMovement, verticalMovement, player.playerNetworkManager.isSprinting.Value);
+                }
             }
         }
 
@@ -80,7 +90,7 @@ namespace EldenRing.NT
 
         private void HandleGroundedMovement()
         {
-            if (!player.canMove)
+            if (!canMove)
                 return;
 
             GetMovementValues();
@@ -118,7 +128,7 @@ namespace EldenRing.NT
 
         private void HandleFreeFallMovement()
         {
-            if (!player.isGrounded)
+            if (!isGrounded)
             {
                 Vector3 freeFallDirection;
 
@@ -132,23 +142,61 @@ namespace EldenRing.NT
 
         private void HandleRotation()
         {
-            if (!player.canRotate)
+            if (player.isDead.Value)
                 return;
 
-            targetRotationDirection = Vector3.zero;
-            targetRotationDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement;
-            targetRotationDirection += PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
-            targetRotationDirection.Normalize();
-            targetRotationDirection.y = 0;
+            if (!canRotate)
+                return;
 
-            if (targetRotationDirection == Vector3.zero)
+            if (player.playerNetworkManager.isLockedOn.Value)
             {
-                targetRotationDirection = transform.forward;
-            }
+                if (player.playerNetworkManager.isSprinting.Value || player.playerLocomotionManager.isRolling)
+                {
+                    Vector3 targetDirection = Vector3.zero;
+                    targetDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement;
+                    targetDirection += PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
+                    targetDirection.Normalize();
+                    targetDirection.y = 0;
 
-            Quaternion newRotation = Quaternion.LookRotation(targetRotationDirection);
-            Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
-            transform.rotation = targetRotation;
+                    if (targetDirection == Vector3.zero)
+                        targetDirection = transform.forward;
+
+                    Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                    Quaternion finalRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                    transform.rotation = finalRotation;
+                }
+                else
+                {
+                    if (player.playerCombatManager.currentTarget == null)
+                        return;
+
+                    Vector3 targetDirection;
+                    targetDirection = player.playerCombatManager.currentTarget.transform.position - transform.position;
+                    targetDirection.Normalize();
+                    targetDirection.y = 0;
+
+                    Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
+                    Quaternion finalRotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+                    transform.rotation = finalRotation;
+                }
+            }
+            else
+            {
+                targetRotationDirection = Vector3.zero;
+                targetRotationDirection = PlayerCamera.instance.cameraObject.transform.forward * verticalMovement;
+                targetRotationDirection += PlayerCamera.instance.cameraObject.transform.right * horizontalMovement;
+                targetRotationDirection.Normalize();
+                targetRotationDirection.y = 0;
+
+                if (targetRotationDirection == Vector3.zero)
+                {
+                    targetRotationDirection = transform.forward;
+                }
+
+                Quaternion newRotation = Quaternion.LookRotation(targetRotationDirection);
+                Quaternion targetRotation = Quaternion.Slerp(transform.rotation, newRotation, rotationSpeed * Time.deltaTime);
+                transform.rotation = targetRotation;
+            }
         }
 
         public void HandleSprinting()
@@ -200,13 +248,12 @@ namespace EldenRing.NT
                 Quaternion playerRotation = Quaternion.LookRotation(rollDirection);
                 player.transform.rotation = playerRotation;
 
-                //  PERFORM A ROLL ANIMATION
                 player.playerAnimatorManager.PlayTargetActionAnimation("Roll_Forward_01", true, true);
+                player.playerLocomotionManager.isRolling = true;
             }
             //  IF WE ARE STATIONAY WHEN WE ATTEMP TO DODGE, WE PERFORM A BACKSTEP
             else
             {
-                //  PERFORM A BACKSTEP ANIMATION
                 player.playerAnimatorManager.PlayTargetActionAnimation("Back_Step_01", true, true);
             }
 
@@ -228,7 +275,7 @@ namespace EldenRing.NT
                 return;
 
             //  IF WE ARE NOT GROUNDED, WE DO NOT ALLOW A JUMP (EX: IF WE ARE IN THE AIR, WE DO NOT ALLOW A JUMP)
-            if (!player.isGrounded)
+            if (!isGrounded)
                 return;
 
             //  IF WE ARE TWO HANDING OUR WEAPON, PLAY THE TWO HANDED JUMP ANIMATION, OTHERWISE PLAY THE ONE HANDED ANIMATION ( TO DO )

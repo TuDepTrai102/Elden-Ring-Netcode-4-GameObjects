@@ -11,6 +11,11 @@ namespace EldenRing.NT
 
         [Header("WEAPON ATTACK MODIFIERS")]
         public float light_Attack_01_Modifier;
+        public float light_Attack_02_Modifier;
+        public float heavy_Attack_01_Modifier;
+        public float heavy_Attack_02_Modifier;
+        public float charge_Attack_01_Modifier;
+        public float charge_Attack_02_Modifier;
 
         protected override void Awake()
         {
@@ -69,11 +74,24 @@ namespace EldenRing.NT
                 case AttackType.LightAttack01:
                     ApplyAttackDamageMofiers(light_Attack_01_Modifier, damageEffect);
                     break;
+                case AttackType.LightAttack02:
+                    ApplyAttackDamageMofiers(light_Attack_02_Modifier, damageEffect);
+                    break;
+                case AttackType.HeavyAttack01:
+                    ApplyAttackDamageMofiers(heavy_Attack_01_Modifier, damageEffect);
+                    break;
+                case AttackType.HeavyAttack02:
+                    ApplyAttackDamageMofiers(heavy_Attack_02_Modifier, damageEffect);
+                    break;
+                case AttackType.ChargedAttack01:
+                    ApplyAttackDamageMofiers(charge_Attack_01_Modifier, damageEffect);
+                    break;
+                case AttackType.ChargedAttack02:
+                    ApplyAttackDamageMofiers(charge_Attack_02_Modifier, damageEffect);
+                    break;
                 default: 
                     break;
             }
-
-            //damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
 
             if (characterCausingDamage.IsOwner)
             {

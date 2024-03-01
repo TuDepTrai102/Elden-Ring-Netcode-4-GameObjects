@@ -31,9 +31,12 @@ namespace EldenRing.NT
         //  OFFENSIVE POISE BONUS WHEN ATTACKING
 
         [Header("ATTACK MODIFIERS")]
-        public float light_Attack_01_Modifier = 1.1f;
-        //  HEAVY ATTACK MODIFIER
-        //  CRITICAL DAMAGE MODIFIER ETC, ETC...
+        public float light_Attack_01_Modifier = 1.0f;
+        public float light_Attack_02_Modifier = 1.2f;
+        public float heavy_Attack_01_Modifier = 1.4f;
+        public float heavy_Attack_02_Modifier = 1.6f;
+        public float charge_Attack_01_Modifier = 2.0f;
+        public float charge_Attack_02_Modifier = 2.2f;
 
         [Header("STAMINA COST MODIFIERS")]
         public int baseStaminaCost = 20;
@@ -43,6 +46,7 @@ namespace EldenRing.NT
 
         [Header("ACTIONS")]
         public WeaponItemAction oh_RB_Action;   //  ONE HANDED RIGHT BUMPER ACTION
+        public WeaponItemAction oh_RT_Action;   //  ONE HANDED RIGHT TRIGGER ACTION
 
         //  ASH OF WAR
 

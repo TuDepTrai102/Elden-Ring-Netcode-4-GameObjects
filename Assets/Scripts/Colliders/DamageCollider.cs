@@ -9,7 +9,7 @@ namespace EldenRing.NT {
         [SerializeField] protected Collider damageCollider;
 
         [Header("DAMAGE TYPES")]
-        public float physicalDamage = 0;                        //  (IN THE FUTURE WILL BE SPLIT INTO [STANDARD], [STRIKE], [SLASH] AND [PIERCE])
+        public float physicalDamage = 0;    //  (IN THE FUTURE WILL BE SPLIT INTO [STANDARD], [STRIKE], [SLASH] AND [PIERCE])
         public float magicDamage = 0;
         public float fireDamage = 0;
         public float lightningDamage = 0;

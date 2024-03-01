@@ -19,6 +19,8 @@ namespace EldenRing.NT
         public float networkRotationSmoothTime = 0.1f;
 
         [Header("ANIMATOR")]
+        public NetworkVariable<bool> isMoving = new NetworkVariable<bool>
+            (false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> horizontalMovement = new NetworkVariable<float>
             (0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<float> verticalMovement = new NetworkVariable<float>
@@ -26,10 +28,18 @@ namespace EldenRing.NT
         public NetworkVariable<float> moveAmount = new NetworkVariable<float>
             (0, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
+        [Header("TARGET")]
+        public NetworkVariable<ulong> currentTargetNetworkObjectID = new NetworkVariable<ulong>
+            (0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Owner);
+
         [Header("FLAGS")]
+        public NetworkVariable<bool> isLockedOn = new NetworkVariable<bool>
+            (false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<bool> isSprinting = new NetworkVariable<bool>
             (false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<bool> isJumping = new NetworkVariable<bool>
+            (false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+        public NetworkVariable<bool> isChargingAttack = new NetworkVariable<bool>
             (false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
 
         [Header("RESOURCES")]
@@ -72,6 +82,32 @@ namespace EldenRing.NT
                     currentHealth.Value = maxHealth.Value;
                 }
             }
+        }
+
+        public void OnLockOnTargetChange(ulong oldID, ulong newID)
+        {
+            if (!IsOwner)
+            {
+                character.characterCombatManager.currentTarget = NetworkManager.Singleton.SpawnManager.SpawnedObjects[newID].gameObject.GetComponent<CharacterManager>();
+            }
+        }
+
+        public void OnIsLockOnChanged(bool old, bool isLockedOn)
+        {
+            if (!isLockedOn)
+            {
+                character.characterCombatManager.currentTarget = null;
+            }
+        }
+
+        public void OnIsChargingAttackChanged(bool oldStatus, bool newStatus)
+        {
+            character.animator.SetBool("isChargingAttack", isChargingAttack.Value);
+        }
+
+        public void OnIsMovingChanged(bool oldStatus, bool newStatus)
+        {
+            character.animator.SetBool("isMoving", isMoving.Value);
         }
 
         //  A SERVER RPC IS A FUNCTION CALLED FROM A CLIENT, TO THE SERVER (IN OUR CASE THE HOST)

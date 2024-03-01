@@ -80,7 +80,7 @@ namespace EldenRing.NT
             {
                 finalDamageDealt = 1;
             }
-
+            Debug.Log("FINAL DAMAGE = " + finalDamageDealt);
             character.characterNetworkManager.currentHealth.Value -= finalDamageDealt;
 
             //  CALCULATE POISE DAMAGE TO  DETERMINE IF THE CHARACTER WILL BE STUNNED
@@ -106,6 +106,9 @@ namespace EldenRing.NT
         private void PlayDirectionalBasedDamageAnimation(CharacterManager character)
         {
             if (!character.IsOwner)
+                return;
+
+            if (character.isDead.Value)
                 return;
 
             //  TODO CALCULATE IF POISE IS BROKEN

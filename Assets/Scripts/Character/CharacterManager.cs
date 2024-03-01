@@ -19,13 +19,13 @@ namespace EldenRing.NT
         [HideInInspector] public CharacterAnimatorManager characterAnimatorManager;
         [HideInInspector] public CharacterCombatManager characterCombatManager;
         [HideInInspector] public CharacterSoundFXManager characterSoundFXManager;
+        [HideInInspector] public CharacterLocomotionManager characterLocomotionManager;
+
+        [Header("CHARACTER GROUP")]
+        public CharacterGroup characterGroup;
 
         [Header("FLAGS")]
         public bool isPerformingAction = false;
-        public bool isGrounded = true;
-        public bool applyRootMotion = false;
-        public bool canRotate = true;
-        public bool canMove = true;
 
         protected virtual void Awake()
         {
@@ -38,6 +38,7 @@ namespace EldenRing.NT
             characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
             characterCombatManager = GetComponent<CharacterCombatManager>();
             characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
+            characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
         }
 
         protected virtual void Start()
@@ -47,7 +48,7 @@ namespace EldenRing.NT
 
         protected virtual void Update()
         {
-            animator.SetBool("isGrounded", isGrounded);
+            animator.SetBool("isGrounded", characterLocomotionManager.isGrounded);
 
             //  IF THIS CHARACTER IS BEING CONTROLLED FROM OUR SIDE,
             //  THEN ASSIGN IT'S NETWORK POSITION TO THE POSITION OF OUR TRANSFORM
@@ -75,9 +76,28 @@ namespace EldenRing.NT
             }
         }
 
+        protected virtual void FixedUpdate()
+        {
+
+        }
+
         protected virtual void LateUpdate()
         {
 
+        }
+
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
+
+            characterNetworkManager.isMoving.OnValueChanged += characterNetworkManager.OnIsMovingChanged;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+
+            characterNetworkManager.isMoving.OnValueChanged -= characterNetworkManager.OnIsMovingChanged;
         }
 
         public virtual IEnumerator ProcessDeathEvent(bool manuallySelectDeathAnimation = false)
