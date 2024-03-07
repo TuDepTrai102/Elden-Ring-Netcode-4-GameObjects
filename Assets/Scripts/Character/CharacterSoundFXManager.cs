@@ -8,6 +8,15 @@ namespace EldenRing.NT
     {
         private AudioSource audioSource;
 
+        [Header("DAMAGE GRUNTS")]
+        [SerializeField] protected AudioClip[] damageGrunts;
+
+        [Header("ATTACK GRUNTS")]
+        [SerializeField] protected AudioClip[] attackGrunts;
+
+        [Header("FOOTSTEPS")]
+        [SerializeField] protected AudioClip[] footSteps;
+
         protected virtual void Awake()
         {
             audioSource = GetComponent<AudioSource>();
@@ -28,6 +37,24 @@ namespace EldenRing.NT
         public void PlayRollSoundFX()
         {
             audioSource.PlayOneShot(WorldSoundFXManager.instance.rollSFX);
+        }
+
+        public virtual void PlayDamageGruntSoundFX()
+        {
+            if (damageGrunts.Length > 0)
+                PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(damageGrunts));
+        }
+
+        public virtual void PlayAttackGruntSoundFX()
+        {
+            if (attackGrunts.Length > 0)
+                PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(attackGrunts));
+        }
+
+        public virtual void PlayFootStepSoundFX()
+        {
+            if (footSteps.Length > 0)
+                PlaySoundFX(WorldSoundFXManager.instance.ChooseRandomSFXFromArray(footSteps));
         }
     }
 }

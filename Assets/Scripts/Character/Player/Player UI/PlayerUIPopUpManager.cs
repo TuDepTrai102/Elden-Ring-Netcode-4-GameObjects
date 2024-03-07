@@ -13,6 +13,12 @@ namespace EldenRing.NT
         [SerializeField] TextMeshProUGUI youDiedPopUpText;
         [SerializeField] CanvasGroup youDiedPopUpCanvasGroup;   //  ALLOWS US TO SET THE ALPHA FADE OVER TIME
 
+        [Header("BOSS DEFEATED POP UP")]
+        [SerializeField] GameObject bossDefeatedPopUpGameObject;
+        [SerializeField] TextMeshProUGUI bossDefeatedPopUpBackgroundText;
+        [SerializeField] TextMeshProUGUI bossDefeatedPopUpText;
+        [SerializeField] CanvasGroup bossDefeatedPopUpCanvasGroup;   //  ALLOWS US TO SET THE ALPHA FADE OVER TIME
+
         public void SendYouDiedPopUp()
         {
             //  ACTIVATE POST PROCESSING EFFECTS
@@ -22,6 +28,17 @@ namespace EldenRing.NT
             StartCoroutine(StretchPopUpTextOverTime(youDiedPopUpBackgroundText, 8, 19f));
             StartCoroutine(FadeInPopUpOverTime(youDiedPopUpCanvasGroup, 5));
             StartCoroutine(WaitThenFadeOutPopUpOverTime(youDiedPopUpCanvasGroup, 2, 5));
+        }
+
+        public void SendBossDefeatedPopUp(string bossDefeatedMessage)
+        {
+            bossDefeatedPopUpText.text = bossDefeatedMessage;
+            bossDefeatedPopUpBackgroundText.text = bossDefeatedMessage;
+            bossDefeatedPopUpGameObject.SetActive(true);
+            bossDefeatedPopUpBackgroundText.characterSpacing = 0;
+            StartCoroutine(StretchPopUpTextOverTime(bossDefeatedPopUpBackgroundText, 8, 19f));
+            StartCoroutine(FadeInPopUpOverTime(bossDefeatedPopUpCanvasGroup, 5));
+            StartCoroutine(WaitThenFadeOutPopUpOverTime(bossDefeatedPopUpCanvasGroup, 2, 5));
         }
 
         private IEnumerator StretchPopUpTextOverTime(TextMeshProUGUI text, float duration, float stretchAmount)

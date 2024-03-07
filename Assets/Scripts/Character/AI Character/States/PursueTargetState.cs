@@ -23,9 +23,12 @@ namespace EldenRing.NT
                 aiCharacter.navMeshAgent.enabled = true;
 
             //  IF OUR TARGET GOES OUTSIDE OF THE FIELD OF VIEW, PIVOT TO FACE THEM
-            if (aiCharacter.aiCharacterCombatManager.viewableAngle < aiCharacter.aiCharacterCombatManager.minimumFOV ||
-                aiCharacter.aiCharacterCombatManager.viewableAngle > aiCharacter.aiCharacterCombatManager.maximumFOV)
-                aiCharacter.aiCharacterCombatManager.PivotTowardsTarget(aiCharacter);
+            if (aiCharacter.aiCharacterCombatManager.enablePivot)
+            {
+                if (aiCharacter.aiCharacterCombatManager.viewableAngle < aiCharacter.aiCharacterCombatManager.minimumFOV ||
+                    aiCharacter.aiCharacterCombatManager.viewableAngle > aiCharacter.aiCharacterCombatManager.maximumFOV)
+                    aiCharacter.aiCharacterCombatManager.PivotTowardsTarget(aiCharacter);
+            }
 
             aiCharacter.aiCharacterLocomotionManager.RotateTowardsAgent(aiCharacter);
 

@@ -332,15 +332,33 @@ namespace EldenRing.NT
 
         public IEnumerator LoadWorldScene()
         {
+            //  DISABLE MOVEMENT VALUE
+            if (player.characterController.enabled)
+                player.characterController.enabled = false;
+
             //  IF YOU JUST 1 WORLD SCENE USE THIS
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(worldSceneIndex);
+            loadOperation.allowSceneActivation = false;
+
+            while (!loadOperation.isDone)
+            {
+                float progressValue = Mathf.Clamp01(loadOperation.progress / 0.99f);
+
+                //  SLIDER VALUE TO SHOW UI FOR PLAYER
+                //loadingSlider.value = progressValue;
+
+                // ENABLE MOVEMENT VALUE
+                player.characterController.enabled = true;
+
+                loadOperation.allowSceneActivation = true;
+
+                yield return null;
+            }
 
             //  IF YOU WANT TO USE DIFFERENT SCENES FOR LEVELS IN YOUR PROJECT USE THIS
             //AsyncOperation loadOperation = SceneManager.LoadSceneAsync(currentCharacterData.sceneIndex);
 
             player.LoadGameDataFromCurrentCharacterData(ref currentCharacterData);
-
-            yield return null;
         }
 
         //  IF YOU WANT TO USE A MULTI SCENE SETUP, THERE IS NO CURRENT SCENE INDEX ON A NEW CHARACTER

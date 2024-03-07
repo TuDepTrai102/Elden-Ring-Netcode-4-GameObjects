@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Netcode;
-using UnityEngine.SceneManagement;
+using System.Linq;
 
 namespace EldenRing.NT
 {
@@ -10,13 +10,12 @@ namespace EldenRing.NT
     {
         public static WorldAIManager instance;
 
-        [Header("DEBUG")]
-        [SerializeField] bool despawnCharacters = false;
-        [SerializeField] bool respawnCharacters = false;
-
         [Header("CHARACTERS")]
-        [SerializeField] GameObject[] aiCharacters;
-        [SerializeField] List<GameObject> spawnedInCharacters;
+        [SerializeField] List<AiCharacterSpawner> aiCharacterSpawners;
+        [SerializeField] List<AICharacterManager> spawnedInCharacters;
+
+        [Header("BOSSES")]
+        [SerializeField] List<AIBossCharacterManager> spawnedInBosses;
 
         private void Awake()
         {
@@ -30,47 +29,36 @@ namespace EldenRing.NT
             }
         }
 
-        private void Start()
+        public void SpawnCharacter(AiCharacterSpawner aiCharacterSpawner)
         {
             if (NetworkManager.Singleton.IsServer)
             {
-                StartCoroutine(WaitForSceneToLoadThenSpawnCharacters());
+                aiCharacterSpawners.Add(aiCharacterSpawner);
+                aiCharacterSpawner.AttemptToSpawnCharacter();
             }
         }
 
-        private void Update()
+        public void AddCharacterToSpawnedCharactersList(AICharacterManager character)
         {
-            if (respawnCharacters)
-            {
-                respawnCharacters = false;
-                SpawnAllCharacters();
-            }
+            if (spawnedInCharacters.Contains(character))
+                return;
 
-            if (despawnCharacters)
+            spawnedInCharacters.Add(character);
+
+            AIBossCharacterManager aiBossCharacter = character as AIBossCharacterManager;
+
+            if (aiBossCharacter != null)
             {
-                despawnCharacters = false;
-                DespawnAllCharacters();
+                if (spawnedInBosses.Contains(aiBossCharacter))
+                    return;
+
+                spawnedInBosses.Add(aiBossCharacter);
             }
         }
 
-        private IEnumerator WaitForSceneToLoadThenSpawnCharacters()
+        public AIBossCharacterManager GetBossCharacterByID(int ID)
         {
-            while (!SceneManager.GetActiveScene().isLoaded)
-            {
-                yield return null;
-            }
-
-            SpawnAllCharacters();
-        }
-
-        private void SpawnAllCharacters()
-        {
-            foreach (var character in aiCharacters)
-            {
-                GameObject instantiatedCharacter = Instantiate(character);
-                instantiatedCharacter.GetComponent<NetworkObject>().Spawn();
-                spawnedInCharacters.Add(instantiatedCharacter);
-            }
+            return spawnedInBosses.FirstOrDefault(boss => boss.bossID == ID);
         }
 
         private void DespawnAllCharacters()

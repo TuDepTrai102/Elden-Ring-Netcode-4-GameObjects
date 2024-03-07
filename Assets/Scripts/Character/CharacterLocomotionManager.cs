@@ -12,7 +12,7 @@ namespace EldenRing.NT
         [SerializeField] protected float gravityForce = 5.55f;
         [SerializeField] LayerMask groundLayer;
         [SerializeField] float groundCheckSphereRadius = 1;
-        [SerializeField] protected Vector3 yVelocity;   //  THE FORCE AT WHICH OUR CHARACTER IS PULLED UP OR DOWN (jumping or Falling)
+        [SerializeField] protected Vector3 yVelocity;               //  THE FORCE AT WHICH OUR CHARACTER IS PULLED UP OR DOWN (jumping or Falling)
         [SerializeField] protected float groundedYVelocity = -20;   //  THE FORCE AT WHICH OUR CHARACTER IS STICKING TO THE GROUND WHILST THEY ARE GROUNDED
         [SerializeField] protected float fallStartYVelocity = -5;   //  THE FORCE AT WHICH OUR CHARACTER BEGINS TO FALL WHEN THEY BECOME UNGROUNDED (RISES AS THEY FALL LONGER)
         protected bool fallingVelocityHasBeenSet = false;
@@ -27,6 +27,11 @@ namespace EldenRing.NT
         protected virtual void Awake()
         {
             character = GetComponent<CharacterManager>();
+        }
+
+        protected virtual void Start()
+        {
+
         }
 
         protected virtual void Update()

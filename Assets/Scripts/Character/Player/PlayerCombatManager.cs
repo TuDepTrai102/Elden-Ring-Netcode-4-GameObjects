@@ -49,6 +49,30 @@ namespace EldenRing.NT
                 case AttackType.LightAttack01:
                     staminaDeducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.lightAttackStaminaCostMultiplier;
                     break;
+                case AttackType.LightAttack02:
+                    staminaDeducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.lightAttackStaminaCostMultiplier;
+                    break;
+                case AttackType.HeavyAttack01:
+                    staminaDeducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.heavyAttackStaminaCostMultiplier;
+                    break;
+                case AttackType.HeavyAttack02:
+                    staminaDeducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.heavyAttackStaminaCostMultiplier;
+                    break;
+                case AttackType.ChargedAttack01:
+                    staminaDeducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.chargedAttackStaminaCostMultiplier;
+                    break;
+                case AttackType.ChargedAttack02:
+                    staminaDeducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.chargedAttackStaminaCostMultiplier;
+                    break;
+                case AttackType.RunningAttack01:
+                    staminaDeducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.runningAttackStaminaCostMultiplier;
+                    break;
+                case AttackType.RollingAttack01:
+                    staminaDeducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.rollingAttackStaminaCostMultiplier;
+                    break;
+                case AttackType.BackstepAttack01:
+                    staminaDeducted = currentWeaponBeingUsed.baseStaminaCost * currentWeaponBeingUsed.backstepAttackStaminaCostMultiplier;
+                    break;
                 default:
                     break;
             }
@@ -64,6 +88,25 @@ namespace EldenRing.NT
             {
                 PlayerCamera.instance.SetLockCameraHeight();
             }
+        }
+
+        //  ANIMATION EVENT CALLS
+        public override void EnableCanDoCombo()
+        {
+            if (player.playerNetworkManager.isUsingRightHand.Value)
+            {
+                player.playerCombatManager.canComboWithMainHandWeapon = true;
+            }
+            else //if (player.playerNetworkManager.isUsingLeftHand.Value)
+            {
+                //  ENABLE OFF HAND COMBO //player.playerCombatManager.canComboWithOffHandWeapon = true;
+            }
+        }
+
+        public override void DisableCanDoCombo()
+        {
+            player.playerCombatManager.canComboWithMainHandWeapon = false;
+            //player.playerCombatManager.canComboWithOffHandWeapon = false;
         }
     }
 }

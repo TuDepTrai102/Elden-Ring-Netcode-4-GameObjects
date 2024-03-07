@@ -78,7 +78,7 @@ namespace EldenRing.NT
                 (transform.position,
                 player.transform.position,
                 ref cameraVelocity,
-                cameraSmoothSpeed * Time.deltaTime);
+                cameraSmoothSpeed);
             transform.position = targetCameraPosition;
         }
 

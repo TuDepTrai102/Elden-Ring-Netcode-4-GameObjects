@@ -197,15 +197,5 @@ namespace EldenRing.NT
             character.characterNetworkManager.NotifyTheServerOfAttackActionAnimationServerRpc
                 (NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
         }
-
-        public virtual void EnableCanDoCombo()
-        {
-
-        }
-
-        public virtual void DisableCanDoCombo()
-        {
-
-        }
     }
 }

@@ -27,4 +27,20 @@ MonoBehaviour:
   holyDamage: 0
   lightningDamage: 0
   poiseDamage: 25
+  light_Attack_01_Modifier: 1
+  light_Attack_02_Modifier: 1.2
+  heavy_Attack_01_Modifier: 1.4
+  heavy_Attack_02_Modifier: 1.6
+  charge_Attack_01_Modifier: 2
+  charge_Attack_02_Modifier: 2.2
   baseStaminaCost: 20
+  lightAttackStaminaCostMultiplier: 0.9
+  oh_RB_Action: {fileID: 0}
+  oh_RT_Action: {fileID: 0}
+  whooshes:
+  - {fileID: 8300000, guid: 4d4ed56c6f2f3e44a82cfcba491aeb7b, type: 3}
+  - {fileID: 8300000, guid: d00a4ea2f8c9fd14da8234cc5a53bb67, type: 3}
+  - {fileID: 8300000, guid: 18b23fb06b3ddeb4ab94095ae36f7afc, type: 3}
+  - {fileID: 8300000, guid: 9c89ef6104e38234c815fff0bd923686, type: 3}
+  - {fileID: 8300000, guid: 5fd5d995ff41973498365c04bd2a3656, type: 3}
+  - {fileID: 8300000, guid: b4748e2eb0192a44fb52a413d12f33aa, type: 3}

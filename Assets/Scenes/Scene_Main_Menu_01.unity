@@ -4392,6 +4392,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 4789109943593247419, guid: d25b8435c09fdcf48ab0317cc687753e, type: 3}
+      propertyPath: cameraSmoothSpeed
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4789109943593247419, guid: d25b8435c09fdcf48ab0317cc687753e, type: 3}
       propertyPath: cameraPivotTransform
       value: 
       objectReference: {fileID: 801266920}
@@ -4615,7 +4619,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8278767508431268797, guid: 063f30957cb2c044690755054d93c3cd, type: 3}
       propertyPath: LogLevel
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8278767508431268797, guid: 063f30957cb2c044690755054d93c3cd, type: 3}
       propertyPath: NetworkConfig.PlayerPrefab
@@ -4623,8 +4627,12 @@ PrefabInstance:
       objectReference: {fileID: 2205407631169410530, guid: fb3c574e69a78304ba8c5c9e22679e9b, type: 3}
     - target: {fileID: 8278767508431268797, guid: 063f30957cb2c044690755054d93c3cd, type: 3}
       propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.size
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8278767508431268797, guid: 063f30957cb2c044690755054d93c3cd, type: 3}
+      propertyPath: NetworkConfig.Prefabs.NetworkPrefabsLists.Array.data[0]
+      value: 
+      objectReference: {fileID: 11400000, guid: 0daf0786a78605e4f8e1a0e0d57e3919, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5056,6 +5064,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 886976300444565265, guid: 7d25d0339cbc7094f9786d8fc55b4a17, type: 3}
+      propertyPath: rollSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 3b03f5f39b54c0d4a98ca5f1eceda429, type: 3}
+    - target: {fileID: 886976300444565265, guid: 7d25d0339cbc7094f9786d8fc55b4a17, type: 3}
       propertyPath: physicalDamageSFX.Array.size
       value: 3
       objectReference: {fileID: 0}
@@ -5176,6 +5188,10 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4031770215064531662, guid: b4b18dc6e340a94428ca5f0afe5aa330, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4650285100089510018, guid: b4b18dc6e340a94428ca5f0afe5aa330, type: 3}
       propertyPath: m_Name
       value: Player UI Manager
@@ -5210,6 +5226,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5533864364069140069, guid: b4b18dc6e340a94428ca5f0afe5aa330, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6275225133915566690, guid: b4b18dc6e340a94428ca5f0afe5aa330, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6275225133915566690, guid: b4b18dc6e340a94428ca5f0afe5aa330, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6993488955403190406, guid: b4b18dc6e340a94428ca5f0afe5aa330, type: 3}
@@ -5358,6 +5382,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7877388886640733346, guid: b4b18dc6e340a94428ca5f0afe5aa330, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169514304453245052, guid: b4b18dc6e340a94428ca5f0afe5aa330, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8169514304453245052, guid: b4b18dc6e340a94428ca5f0afe5aa330, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8470307534097641067, guid: b4b18dc6e340a94428ca5f0afe5aa330, type: 3}

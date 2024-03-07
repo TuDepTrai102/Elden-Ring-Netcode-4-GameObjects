@@ -9,6 +9,10 @@ namespace EldenRing.NT
     {
         CharacterManager character;
 
+        [Header("ACTIVE")]
+        public NetworkVariable<bool> isActive = new NetworkVariable<bool>
+            (true, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
+
         [Header("POSITION")]
         public NetworkVariable<Vector3> networkPosition = new NetworkVariable<Vector3>
             (Vector3.zero, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
@@ -33,6 +37,8 @@ namespace EldenRing.NT
             (0, NetworkVariableReadPermission.Owner, NetworkVariableWritePermission.Owner);
 
         [Header("FLAGS")]
+        public NetworkVariable<bool> isInvulnerable = new NetworkVariable<bool>
+            (false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<bool> isLockedOn = new NetworkVariable<bool>
             (false, NetworkVariableReadPermission.Everyone, NetworkVariableWritePermission.Owner);
         public NetworkVariable<bool> isSprinting = new NetworkVariable<bool>
@@ -67,7 +73,7 @@ namespace EldenRing.NT
             character = GetComponent<CharacterManager>();
         }
 
-        public void CheckHP(int oldValue, int newValue)
+        public virtual void CheckHP(int oldValue, int newValue)
         {
             if (currentHealth.Value <= 0)
             {
@@ -108,6 +114,11 @@ namespace EldenRing.NT
         public void OnIsMovingChanged(bool oldStatus, bool newStatus)
         {
             character.animator.SetBool("isMoving", isMoving.Value);
+        }
+
+        public virtual void OnIsActiveChanged(bool oldStatus, bool newStatus)
+        {
+            gameObject.SetActive(isActive.Value);
         }
 
         //  A SERVER RPC IS A FUNCTION CALLED FROM A CLIENT, TO THE SERVER (IN OUR CASE THE HOST)

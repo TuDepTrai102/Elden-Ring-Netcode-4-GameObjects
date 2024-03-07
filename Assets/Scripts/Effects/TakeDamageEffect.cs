@@ -18,7 +18,7 @@ namespace EldenRing.NT
         public float holyDamage = 0;
 
         [Header("FINAL DAMAGE")]
-        [SerializeField] private int finalDamageDealt = 0;    //  THE DAMAGE THE CHARACTER TAKES AFTER [ALL] CALCULATIONS HAVE BEEN MADE
+        [SerializeField] private int finalDamageDealt = 0;      //  THE DAMAGE THE CHARACTER TAKES AFTER [ALL] CALCULATIONS HAVE BEEN MADE
 
         [Header("POISE")]
         public float poiseDamage = 0;
@@ -42,13 +42,14 @@ namespace EldenRing.NT
 
         public override void ProcessEffect(CharacterManager character)
         {
+            if (character.characterNetworkManager.isInvulnerable.Value)
+                return;
+
             base.ProcessEffect(character);
 
             //  IF THE CHARACTER IS DEAD, NO ADDITIONAL DAMAGE EFFECTS SHOULD BE PROCESSED
             if (character.isDead.Value)
                 return;
-
-            //  CHECK FOR "INVULNERABILITY"
 
             CalculateDamage(character);
             PlayDirectionalBasedDamageAnimation(character);
@@ -80,6 +81,7 @@ namespace EldenRing.NT
             {
                 finalDamageDealt = 1;
             }
+
             Debug.Log("FINAL DAMAGE = " + finalDamageDealt);
             character.characterNetworkManager.currentHealth.Value -= finalDamageDealt;
 
@@ -99,6 +101,7 @@ namespace EldenRing.NT
             AudioClip physicalDamageSFX = WorldSoundFXManager.instance.ChooseRandomSFXFromArray(WorldSoundFXManager.instance.physicalDamageSFX);
 
             character.characterSoundFXManager.PlaySoundFX(physicalDamageSFX);
+            character.characterSoundFXManager.PlayDamageGruntSoundFX();
             //  IF FIRE DAMAGE IS GREATER THAN 0, PLAY BURN SFX
             //  IF LIGHTNING DAMAGE IS GREATER THAN 0, PLAY ZAP SFX
         }

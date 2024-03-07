@@ -31,5 +31,15 @@ namespace EldenRing.NT
         [Header("STATS")]
         public int vitality;
         public int endurance;
+
+        [Header("BOSSES")]
+        public SerializableDictionary<int, bool> boosesAwakened;    //  THE INT IS THE BOSS I.D, THE BOOL IS AWAKENED STATUS
+        public SerializableDictionary<int, bool> boosesDefeated;    //  THE INT IS THE BOSS I.D, THE BOOL IS DEFEATED STATUS
+
+        public CharacterSaveData()
+        {
+            boosesAwakened = new SerializableDictionary<int, bool>();
+            boosesDefeated = new SerializableDictionary<int, bool>();
+        }
     }
 }

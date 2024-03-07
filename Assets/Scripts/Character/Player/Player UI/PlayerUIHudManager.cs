@@ -16,6 +16,10 @@ namespace EldenRing.NT
         [SerializeField] Image rightWeaponQuickSlotIcon;
         [SerializeField] Image leftWeaponQuickSlotIcon;
 
+        [Header("BOSS HEALTH")]
+        public Transform bossHealthBarParent;
+        public GameObject bossHealthBarObject;
+
         public void RefreshHUD()
         {
             healthBar.gameObject.SetActive(false);

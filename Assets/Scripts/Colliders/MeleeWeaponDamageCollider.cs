@@ -16,6 +16,9 @@ namespace EldenRing.NT
         public float heavy_Attack_02_Modifier;
         public float charge_Attack_01_Modifier;
         public float charge_Attack_02_Modifier;
+        public float running_Attack_01_Modifier;
+        public float rolling_Attack_01_Modifier;
+        public float backstep_Attack_01_Modifier;
 
         protected override void Awake()
         {
@@ -44,8 +47,6 @@ namespace EldenRing.NT
                 //  CHECK IF WE CAN DAMAGE TARGET BASED ON FRIENDLY FIRE
 
                 //  CHECK IF TARGET IS BLOCKING
-
-                //  CHECK IF TARGET IS INVULNERABLE
 
                 DamageTarget(damageTarget);
             }
@@ -88,6 +89,15 @@ namespace EldenRing.NT
                     break;
                 case AttackType.ChargedAttack02:
                     ApplyAttackDamageMofiers(charge_Attack_02_Modifier, damageEffect);
+                    break;
+                case AttackType.RunningAttack01:
+                    ApplyAttackDamageMofiers(running_Attack_01_Modifier, damageEffect);
+                    break;
+                case AttackType.RollingAttack01:
+                    ApplyAttackDamageMofiers(rolling_Attack_01_Modifier, damageEffect);
+                    break;
+                case AttackType.BackstepAttack01:
+                    ApplyAttackDamageMofiers(backstep_Attack_01_Modifier, damageEffect);
                     break;
                 default: 
                     break;

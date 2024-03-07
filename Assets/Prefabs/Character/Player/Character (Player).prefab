@@ -16452,7 +16452,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 951099334
+  GlobalObjectIdHash: 1405778939
+  InScenePlacedSourceGlobalObjectIdHash: 0
   AlwaysReplicateAsRoot: 0
   SynchronizeTransform: 1
   ActiveSceneSynchronization: 0
@@ -16472,6 +16473,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 571fea880b79989418ca428043189ff0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive:
+    m_InternalValue: 1
   networkPosition:
     m_InternalValue: {x: 0, y: 0, z: 0}
   networkRotation:
@@ -16479,17 +16482,23 @@ MonoBehaviour:
   networkPositionVelocity: {x: 0, y: 0, z: 0}
   networkPositionSmoothTime: 0.1
   networkRotationSmoothTime: 0.1
+  isMoving:
+    m_InternalValue: 0
   horizontalMovement:
     m_InternalValue: 0
   verticalMovement:
     m_InternalValue: 0
   moveAmount:
     m_InternalValue: 0
+  currentTargetNetworkObjectID:
+    m_InternalValue: 0
   isLockedOn:
     m_InternalValue: 0
   isSprinting:
     m_InternalValue: 0
   isJumping:
+    m_InternalValue: 0
+  isChargingAttack:
     m_InternalValue: 0
   currentHealth:
     m_InternalValue: 0
@@ -16603,13 +16612,9 @@ MonoBehaviour:
   characterAnimatorManager: {fileID: 0}
   characterCombatManager: {fileID: 0}
   characterSoundFXManager: {fileID: 0}
+  characterLocomotionManager: {fileID: 0}
+  characterGroup: 0
   isPerformingAction: 0
-  isGrounded: 1
-  applyRootMotion: 0
-  canRotate: 1
-  canMove: 1
-  respawnCharacter: 0
-  switchRightWeapon: 0
   playerAnimatorManager: {fileID: 0}
   playerLocomotionManager: {fileID: 0}
   playerNetworkManager: {fileID: 0}
@@ -16629,10 +16634,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2707a4dfa74309147850669a346fa4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastAttackAnimationPerformed: 
   currentTarget: {fileID: 0}
   currentAttackType: 0
   lockOnTransform: {fileID: 4031724797458030980}
   currentWeaponBeingUsed: {fileID: 0}
+  canComboWithMainHandWeapon: 0
 --- !u!114 &1252490267774682531
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16667,6 +16674,10 @@ MonoBehaviour:
   yVelocity: {x: 0, y: 0, z: 0}
   groundedYVelocity: -20
   fallStartYVelocity: -5
+  isRolling: 0
+  canRotate: 1
+  canMove: 1
+  isGrounded: 1
   verticalMovement: 0
   horizontalMovement: 0
   moveAmount: 0
@@ -16734,6 +16745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c32f8ff9d10924d4eac610739f58a16d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  applyRootMotion: 0
   lastDamageAnimationPlayed: 
   hit_Forward_Medium_01: Hit_Forward_Medium_01
   hit_Forward_Medium_02: Hit_Forward_Medium_02
@@ -16759,6 +16771,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cef88598d0ed8fe4397d41f30af35619, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageGrunts:
+  - {fileID: 8300000, guid: 5319d335f47c30c45a098c3b7207d360, type: 3}
+  - {fileID: 8300000, guid: a118b77559d9f764cbc3b30b4be64c29, type: 3}
+  - {fileID: 8300000, guid: 949069d19c7e757468367c171ac77160, type: 3}
+  - {fileID: 8300000, guid: 3595d1cd0cf73e747ad9d5b4df9a41de, type: 3}
+  - {fileID: 8300000, guid: e3833faeeacf881439fef9ce96af322d, type: 3}
+  - {fileID: 8300000, guid: 7cf9167a5239d254a84b44cf35c8d481, type: 3}
+  - {fileID: 8300000, guid: 641d4e6025e406c4885dfa1e5c73ba9b, type: 3}
+  - {fileID: 8300000, guid: c61a58e3035da7b46a1dd47889d38d2b, type: 3}
+  attackGrunts:
+  - {fileID: 8300000, guid: 93e2375703cfc9445b94007a531cd9f7, type: 3}
+  - {fileID: 8300000, guid: 4f38cfc057803284a8ce039fd8f26215, type: 3}
+  - {fileID: 8300000, guid: 33b254c7c6a9bd544942d22f9324246a, type: 3}
+  - {fileID: 8300000, guid: 19aedbf8b29a60d43952665e81c18be6, type: 3}
+  - {fileID: 8300000, guid: 7d7fc97b142add344bdaa7c64e9c8673, type: 3}
+  - {fileID: 8300000, guid: b1b0134244e36784b9a6d58c192d76c9, type: 3}
+  - {fileID: 8300000, guid: f7e6e74bdab7f44489dd30d3593b115b, type: 3}
+  - {fileID: 8300000, guid: 171f04d3f87ca6140a6520d5fb2ef9f7, type: 3}
 --- !u!114 &8684645127657516947
 MonoBehaviour:
   m_ObjectHideFlags: 0

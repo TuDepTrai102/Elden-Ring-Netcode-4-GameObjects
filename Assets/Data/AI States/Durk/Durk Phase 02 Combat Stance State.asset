@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2f05bce8f9e45447ae7bfdc6bbdc206, type: 3}
+  m_Name: Durk Phase 02 Combat Stance State
+  m_EditorClassIdentifier: 
+  aiCharacterAttacks:
+  - {fileID: 11400000, guid: a3d08945017fe32438e65a408dde0768, type: 2}
+  - {fileID: 11400000, guid: 695790de985a4d4409168cf61e26cd99, type: 2}
+  - {fileID: 11400000, guid: 943d5b4b78089fd47abb1c516482566f, type: 2}
+  potentialAttacks: []
+  choosenAttack: {fileID: 0}
+  previousAttack: {fileID: 0}
+  canPerformCombo: 0
+  chanceToPerformCombo: 25
+  maximumEngagementDistance: 5

@@ -44,6 +44,13 @@ namespace EldenRing.NT
         [SerializeField] bool RT_Input = false;                     //  Q (KEY BOARD) / RIGHT TRIGGER (GAME PAD)
         [SerializeField] bool Hold_RT_Input = false;                //  HOLD Q (KEY BOARD) / RIGHT TRIGGER (GAME PAD)
 
+        [Header("QUED INPUTS")]
+        [SerializeField] bool input_Qued_Is_Active = false;
+        [SerializeField] float default_Qued_Input_Timer = 0.35f;
+        [SerializeField] float qued_Input_Timer = 0;
+        [SerializeField] bool qued_RB_Input = false;
+        [SerializeField] bool qued_RT_Input = false;
+
         private void Awake()
         {
             if (instance == null)
@@ -128,6 +135,10 @@ namespace EldenRing.NT
                 playerControls.PlayerActions.Sprint.performed += i => sprint_Input = true;
                 //  RELEASING THE INPUT, SETS THE BOOL TO FALSE
                 playerControls.PlayerActions.Sprint.canceled += i => sprint_Input = false;
+
+                //  QUED INPUTS
+                playerControls.PlayerActions.QuedRB.performed += i => QuedInput(ref qued_RB_Input);
+                playerControls.PlayerActions.QuedRT.performed += i => QuedInput(ref qued_RT_Input);
             }
 
             playerControls.Enable();
@@ -174,6 +185,7 @@ namespace EldenRing.NT
             HandleChargeRTInput();
             HandleSwitchRightWeaponInput();
             HandleSwitchLeftWeaponInput();
+            HandleQuedInputs();
         }
 
         //  LOCK ON
@@ -411,6 +423,58 @@ namespace EldenRing.NT
             {
                 switch_Left_Weapon_Input = false;
                 player.playerEquipmentManager.SwitchLeftWeapon();
+            }
+        }
+
+        private void QuedInput(ref bool quedInput)  //  PASSING A REFERENCE MEANS WE PASS A SPECIFIC BOOL, AND NOT THE VALUE OF THAT BOOL (TRUE OR FALSE)
+        {
+            //  RESET ALL QUED INPUTS SO ONLY ONE CAN QUED AT A TIME
+            qued_RB_Input = false;
+            qued_RT_Input = false;
+            //qued_LB_Input = false;
+            //qued_LT_Input = false;
+
+            //  CHECK FOR ANY UI WINDOW BEING OPEN, IF IT'S OPEN, RETURN
+
+            if (player.isPerformingAction || player.playerNetworkManager.isJumping.Value)
+            {
+                quedInput = true;
+                qued_Input_Timer = default_Qued_Input_Timer;
+                input_Qued_Is_Active = true;
+            }
+        }
+
+        private void ProcessQuedInput()
+        {
+            if (player.isDead.Value)
+                return;
+
+            if (qued_RB_Input)
+                RB_Input = true;
+
+            if (qued_RT_Input)
+                RT_Input = true;
+        }
+
+        private void HandleQuedInputs()
+        {
+            if (input_Qued_Is_Active)
+            {
+                //  WHILE THE TIMER IS ABOVE 0, KEEP ATTEMPTING TO PROCESS INPUT
+                if (qued_Input_Timer > 0)
+                {
+                    qued_Input_Timer -= Time.deltaTime;
+                    ProcessQuedInput();
+                }
+                else
+                {
+                    //  RESET ALL QUED INPUTS
+                    qued_RB_Input = false;
+                    qued_RT_Input = false;
+
+                    input_Qued_Is_Active = false;
+                    qued_Input_Timer = 0;
+                }
             }
         }
     }

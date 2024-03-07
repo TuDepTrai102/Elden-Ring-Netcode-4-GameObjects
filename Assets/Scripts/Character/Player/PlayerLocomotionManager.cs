@@ -90,10 +90,13 @@ namespace EldenRing.NT
 
         private void HandleGroundedMovement()
         {
+            if (canMove || canRotate)
+            {
+                GetMovementValues();
+            }
+
             if (!canMove)
                 return;
-
-            GetMovementValues();
 
             //  OUR MOVE DIRECTION BASED ON OUR CAMERA FACING PERSPECTIVE & OUR MOVEMENT INPUTS
             moveDirection = PlayerCamera.instance.transform.forward * verticalMovement;

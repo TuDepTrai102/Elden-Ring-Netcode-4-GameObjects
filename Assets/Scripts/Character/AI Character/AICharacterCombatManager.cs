@@ -6,8 +6,13 @@ namespace EldenRing.NT
 {
     public class AICharacterCombatManager : CharacterCombatManager
     {
+        protected AICharacterManager aiCharacter;
+
         [Header("ACTION RECOVERY")]
         public float actionRecoveryTimer = 0;
+
+        [Header("PIVOT")]
+        public bool enablePivot = true;
 
         [Header("TARGET INFORMATION")]
         public float distanceFromTarget;
@@ -26,6 +31,7 @@ namespace EldenRing.NT
         {
             base.Awake();
 
+            aiCharacter = GetComponent<AICharacterManager>();
             lockOnTransform = GetComponentInChildren<LockOnTransform>().transform;
         }
 
@@ -72,14 +78,16 @@ namespace EldenRing.NT
                             targetsDirection = targetCharacter.transform.position - transform.position;
                             viewableAngle = WorldUtilityManager.instance.GetAngleOfTarget(transform, targetsDirection);
                             aiCharacter.characterCombatManager.SetTarget(targetCharacter);
-                            PivotTowardsTarget(aiCharacter);
+
+                            if (enablePivot)
+                                PivotTowardsTarget(aiCharacter);
                         }
                     }
                 }
             }
         }
 
-        public void PivotTowardsTarget(AICharacterManager aiCharacter)
+        public virtual void PivotTowardsTarget(AICharacterManager aiCharacter)
         {
             //  PLAY A PIVOT ANIMATION DEPENDING ON VIEWABLE ANGLE OF TARGET
             if (aiCharacter.isPerformingAction)

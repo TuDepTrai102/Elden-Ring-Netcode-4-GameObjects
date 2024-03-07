@@ -7,6 +7,9 @@ namespace EldenRing.NT
 {
     public class AICharacterManager : CharacterManager
     {
+        [Header("CHARACTER NAME")]
+        public string characterName = "";
+
         [HideInInspector] public AICharacterNetworkManager aiCharacterNetworkManager;
         [HideInInspector] public AICharacterCombatManager aiCharacterCombatManager;
         [HideInInspector] public AICharacterLocomotionManager aiCharacterLocomotionManager;
@@ -15,7 +18,7 @@ namespace EldenRing.NT
         public NavMeshAgent navMeshAgent;
 
         [Header("CURRENT STATE")]
-        [SerializeField] AIState currentState;
+        [SerializeField] protected AIState currentState;
 
         [Header("STATES")]
         public IdleState idle;
@@ -32,12 +35,30 @@ namespace EldenRing.NT
             aiCharacterLocomotionManager = GetComponent<AICharacterLocomotionManager>();
 
             navMeshAgent = GetComponentInChildren<NavMeshAgent>();
+        }
 
-            //  USE A COPY OF THE SCRIPTABLE OBJECTS, SO THE ORIGINALS ARE NOT MODIFIED
-            idle = Instantiate(idle);
-            pursueTarget = Instantiate(pursueTarget);
+        public override void OnNetworkSpawn()
+        {
+            base.OnNetworkSpawn();
 
-            currentState = idle;
+            if (IsOwner)
+            {
+                //  USE A COPY OF THE SCRIPTABLE OBJECTS, SO THE ORIGINALS ARE NOT MODIFIED
+                idle = Instantiate(idle);
+                pursueTarget = Instantiate(pursueTarget);
+                combatStance = Instantiate(combatStance);
+                attack = Instantiate(attack);
+                currentState = idle;
+            }
+
+            aiCharacterNetworkManager.currentHealth.OnValueChanged += aiCharacterNetworkManager.CheckHP;
+        }
+
+        public override void OnNetworkDespawn()
+        {
+            base.OnNetworkDespawn();
+
+            aiCharacterNetworkManager.currentHealth.OnValueChanged -= aiCharacterNetworkManager.CheckHP;
         }
 
         protected override void Start()

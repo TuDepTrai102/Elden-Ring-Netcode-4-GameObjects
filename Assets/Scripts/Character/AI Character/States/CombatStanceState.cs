@@ -9,10 +9,10 @@ namespace EldenRing.NT
     public class CombatStanceState : AIState
     {
         [Header("ATTACKS")]
-        public List<AICharacterAttackAction> aiCharacterAttacks;    //  A list of all possible attacks this character can do
-        protected List<AICharacterAttackAction> potentialAttacks;   //  All attacks possible in this situation (based on angle, distance etc...)
-        private AICharacterAttackAction choosenAttack;
-        private AICharacterAttackAction previousAttack;
+        [SerializeField] public List<AICharacterAttackAction> aiCharacterAttacks;    //  A list of all possible attacks this character can do
+        [SerializeField] protected List<AICharacterAttackAction> potentialAttacks;   //  All attacks possible in this situation (based on angle, distance etc...)
+        [SerializeField] private AICharacterAttackAction choosenAttack;
+        [SerializeField] private AICharacterAttackAction previousAttack;
         protected bool hasAttack = false;
 
         [Header("COMBO")]
@@ -31,12 +31,15 @@ namespace EldenRing.NT
             if (!aiCharacter.navMeshAgent.enabled)
                 aiCharacter.navMeshAgent.enabled = true;
 
-            //  IF YOU WANT THE A.I CHARACTER TO FACE AND TURN TOWARDS IT'S TARGET WHEN IT'S OUTSIDE IT'S FOV INCLUDE THIS
-            if (!aiCharacter.aiCharacterNetworkManager.isMoving.Value)
+            //  IF YOU WANT THE A.I CHARACTER TO FACE AND TURN TOWARDS IT'S TARGET WHEN IT'S OUTSIDE IT'S FOV INCLUDE THIS        
+            if (aiCharacter.aiCharacterCombatManager.enablePivot)
             {
-                if (aiCharacter.aiCharacterCombatManager.viewableAngle < -30 ||
-                    aiCharacter.aiCharacterCombatManager.viewableAngle > 30)
-                    aiCharacter.aiCharacterCombatManager.PivotTowardsTarget(aiCharacter);
+                if (!aiCharacter.aiCharacterNetworkManager.isMoving.Value)
+                {
+                    if (aiCharacter.aiCharacterCombatManager.viewableAngle < -30 ||
+                        aiCharacter.aiCharacterCombatManager.viewableAngle > 30)
+                        aiCharacter.aiCharacterCombatManager.PivotTowardsTarget(aiCharacter);
+                }
             }
 
             aiCharacter.aiCharacterCombatManager.RotateTowardsAgent(aiCharacter);
@@ -115,6 +118,8 @@ namespace EldenRing.NT
                     choosenAttack = attack;
                     previousAttack = choosenAttack;
                     hasAttack = true;
+
+                    return;
                 }
             }
         }
