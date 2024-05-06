@@ -61,20 +61,32 @@ namespace EldenRing.NT
             return spawnedInBosses.FirstOrDefault(boss => boss.bossID == ID);
         }
 
+        public void ResetAllCharacters()
+        {
+            DespawnAllCharacters();
+
+            foreach (var spawner in aiCharacterSpawners)
+            {
+                spawner.AttemptToSpawnCharacter();
+            }
+        }
+
         private void DespawnAllCharacters()
         {
             foreach (var character in spawnedInCharacters)
             {
                 character.GetComponent<NetworkObject>().Despawn();
             }
+
+            spawnedInCharacters.Clear();
         }
 
         private void DisableAllCharacters()
         {
-            //
-            //
-            //
-            //
+            // TO DO DISABLE CHARACTER GAMEOBJECTS, SYNC DISABLED STATUS ON NETWORK
+            // DISABLE GAMEOBJECTS FOR CLIENTS UPON CONNECTING, IF DISABLED STATUS IS TRUE
+            // CAN BE USED TO DISABLE CHARACTERS THAT ARE FAR FROM PLAYERS TO SAVE MEMORY
+            // CHARACTERS CAN BE SPLIT INTO AREAS (AREA_00_, AREA_01, AREA_02) ECT
         }
     }
 }

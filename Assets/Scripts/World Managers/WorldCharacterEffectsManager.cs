@@ -13,6 +13,7 @@ namespace EldenRing.NT
 
         [Header("DAMAGE")]
         public TakeDamageEffect takeDamageEffect;
+        public TakeBlockedDamageEffect takeBlockedDamageEffect;
 
         [SerializeField] List<InstantCharacterEffect> instantEffects;
 

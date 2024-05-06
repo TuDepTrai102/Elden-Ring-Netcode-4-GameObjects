@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8bb57f4ebc339f46a6838a3ba29a6af, type: 3}
   m_Name: Unarmed
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: Unarmed
   itemIcon: {fileID: 0}
-  itemDescription: 
+  itemDescription: A unarmed weapon.
   itemID: 0
+  weaponAnimator: {fileID: 22100000, guid: 16f66f0d101625b4985292cbd33fcae0, type: 2}
   weaponModel: {fileID: 2331622655530487817, guid: 8ae852aefa69149428b50fc23e82fadb, type: 3}
   strengthREQ: 0
   dexREQ: 0
@@ -27,4 +28,22 @@ MonoBehaviour:
   holyDamage: 0
   lightningDamage: 0
   poiseDamage: 10
+  light_Attack_01_Modifier: 1.1
+  light_Attack_02_Modifier: 1.2
+  heavy_Attack_01_Modifier: 1.4
+  heavy_Attack_02_Modifier: 1.6
+  charge_Attack_01_Modifier: 2
+  charge_Attack_02_Modifier: 2.2
+  running_Attack_01_Modifier: 1.1
+  rolling_Attack_01_Modifier: 1.1
+  backstep_attack_01_Modifier: 1.1
   baseStaminaCost: 5
+  lightAttackStaminaCostMultiplier: 1
+  heavyAttackStaminaCostMultiplier: 1.3
+  chargedAttackStaminaCostMultiplier: 1.5
+  runningAttackStaminaCostMultiplier: 1.1
+  rollingAttackStaminaCostMultiplier: 1.1
+  backstepAttackStaminaCostMultiplier: 1.1
+  oh_RB_Action: {fileID: 0}
+  oh_RT_Action: {fileID: 0}
+  whooshes: []

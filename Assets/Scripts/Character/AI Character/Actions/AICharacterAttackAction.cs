@@ -25,7 +25,11 @@ namespace EldenRing.NT
 
         public void AttemptToPerformAction(AICharacterManager aiCharacter)
         {
-            aiCharacter.characterAnimatorManager.PlayTargetAttackActionAnimation(attackType, attackAnimation, true);
+            //  DOES YOUR A.I ACT LIKE A PLAYER CHARACTER (LIKE AN INVADER A.I?) IF SO USE THIS
+            //aiCharacter.characterAnimatorManager.PlayTargetAttackActionAnimation(attackType, attackAnimation, true);
+
+            //  DOES YOUR A.I USE SIMPLE ATTACKS THAT ARE PURELY ANIMATION BASED (NOT EQUIPMENT/ITEM BASED) IF SO USE THIS
+            aiCharacter.characterAnimatorManager.PlayTargetActionAnimation(attackAnimation, true);
         }
     }
 }

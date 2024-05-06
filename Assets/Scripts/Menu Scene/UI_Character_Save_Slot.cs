@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 namespace EldenRing.NT
 {
@@ -13,8 +14,8 @@ namespace EldenRing.NT
         public CharacterSlot characterSlot;
 
         [Header("CHARACTER INFO")]
-        public Text characterName;  //  OR WE CAN USE (TEXTMESHPROUGUI) //TextMeshProUGUI characterName;
-        public Text timedPlayed;    //  OR WE CAN USE (TEXTMESHPROUGUI) //TextMeshProUGUI timedPlayed;
+        public TextMeshProUGUI characterName;
+        public TextMeshProUGUI timedPlayed;
 
         private void OnEnable()
         {

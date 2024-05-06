@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace EldenRing.NT
 {
-    [CreateAssetMenu(menuName = "Character Actions/Weapoon Actions/Light Attack Action")]
+    [CreateAssetMenu(menuName = "Character Actions/Weapon Actions/Light Attack Action")]
     public class LightAttackWeaponItemAction : WeaponItemAction
     {
         [Header("LIGHT ATTACKS")]
@@ -32,6 +32,9 @@ namespace EldenRing.NT
 
             if (!playerPerformingAction.characterLocomotionManager.isGrounded)
                 return;
+
+            if (playerPerformingAction.IsOwner)
+                playerPerformingAction.playerNetworkManager.isAttacking.Value = true;
 
             //  IF WE ARE SPRINTING, PERFORM A RUNNING ATTACK
             if (playerPerformingAction.playerNetworkManager.isSprinting.Value)
@@ -67,17 +70,17 @@ namespace EldenRing.NT
                 //  PERFORM AN ATTACK BASED ON PREVIOUS ATTACK WE JUST PERFORM PLAYED
                 if (playerPerformingAction.playerCombatManager.lastAttackAnimationPerformed == light_Attack_01)
                 {
-                    playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.LightAttack02, light_Attack_02, true);
+                    playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack02, light_Attack_02, true);
                 }
                 else
                 {
-                    playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.LightAttack01, light_Attack_01, true);
+                    playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack01, light_Attack_01, true);
                 }
             }
             //  OTHERWISE, IF WE ARE NOT ALREADY ATTACKING, WE JUST PERFORM A REGULAR ATTACK
             else if (!playerPerformingAction.isPerformingAction)
             {
-                playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.LightAttack01, light_Attack_01, true);
+                playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(weaponPerformingAction, AttackType.LightAttack01, light_Attack_01, true);
             }
         }
 
@@ -86,7 +89,7 @@ namespace EldenRing.NT
             //  IF WE ARE TWO HANDING OUR WEAPON, PERFORM A TWO HAND RUN ATTACK (TO DO)
             //  ELSE, PERFORM A ONE HAND RUN ATTACK
 
-            playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.RunningAttack01, run_Attack_01, true);
+            playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(weaponPerformingAction, AttackType.RunningAttack01, run_Attack_01, true);
         }
 
         private void PerformRollingAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
@@ -94,7 +97,7 @@ namespace EldenRing.NT
             //  IF WE ARE TWO HANDING OUR WEAPON, PERFORM A TWO HAND RUN ATTACK (TO DO)
             //  ELSE, PERFORM A ONE HAND RUN ATTACK
             playerPerformingAction.characterCombatManager.canPerformRollingAttack = false;
-            playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.RollingAttack01, roll_Attack_01, true);
+            playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(weaponPerformingAction, AttackType.RollingAttack01, roll_Attack_01, true);
         }
 
         private void PerformBackstepAttack(PlayerManager playerPerformingAction, WeaponItem weaponPerformingAction)
@@ -102,7 +105,7 @@ namespace EldenRing.NT
             //  IF WE ARE TWO HANDING OUR WEAPON, PERFORM A TWO HAND RUN ATTACK (TO DO)
             //  ELSE, PERFORM A ONE HAND RUN ATTACK
             playerPerformingAction.characterCombatManager.canPerformBackstepAttack = false;
-            playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(AttackType.BackstepAttack01, backstep_Attack_01, true);
+            playerPerformingAction.playerAnimatorManager.PlayTargetAttackActionAnimation(weaponPerformingAction, AttackType.BackstepAttack01, backstep_Attack_01, true);
         }
     }
 }

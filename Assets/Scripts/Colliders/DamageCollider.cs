@@ -15,11 +15,18 @@ namespace EldenRing.NT {
         public float lightningDamage = 0;
         public float holyDamage = 0;
 
+        [Header("POISE")]
+        public float poiseDamage = 0;
+
         [Header("CONTACT POINT")]
         protected Vector3 contactPoint;
 
         [Header("CHARACTERS DAMAGED")]
         protected List<CharacterManager> charactersDamaged = new List<CharacterManager>();
+
+        [Header("BLOCK")]
+        protected Vector3 directionFromAttackToDamageTarget;
+        protected float dotValueFromAttackToDamageTarget;
 
         protected virtual void Awake()
         {
@@ -37,9 +44,46 @@ namespace EldenRing.NT {
                 //  CHECK IF WE CAN DAMAGE TARGET BASED ON FRIENDLY FIRE
 
                 //  CHECK IF TARGET IS BLOCKING
+                CheckForBlock(damageTarget);
 
                 DamageTarget(damageTarget);
             }
+        }
+
+        protected virtual void CheckForBlock(CharacterManager damageTarget)
+        {
+            //  IF THIS CHARACTER ALREADY HAS BEEN DAMAGED, DO NOT PROCEED
+            if (charactersDamaged.Contains(damageTarget))
+                return;
+
+            GetBlockingDotValues(damageTarget);
+
+            //  1. CHECK IF THE CHARACTER BEING DAMAGED IS BLOCKING 
+            if (damageTarget.characterNetworkManager.isBlocking.Value && dotValueFromAttackToDamageTarget > 0.3f)
+            {
+                //  2. IF THE CHARACTER IS BLOCKING, CHECK IF THEY ARE FACING IN THE CORRECT DIRECTION TO BLOCK SUCCESFULLY
+
+                charactersDamaged.Add(damageTarget);
+
+                TakeBlockedDamageEffect damageEffect = Instantiate(WorldCharacterEffectsManager.instance.takeBlockedDamageEffect);
+                damageEffect.physicalDamage = physicalDamage;
+                damageEffect.magicDamage = magicDamage;
+                damageEffect.fireDamage = fireDamage;
+                damageEffect.lightningDamage = lightningDamage;
+                damageEffect.holyDamage = holyDamage;
+                damageEffect.poiseDamage = poiseDamage;
+                damageEffect.staminaDamage = poiseDamage;   //  IF YOU WANT TO GIVE STAMINA ITS OWN VARIABLE, INSTEAD OF USING POISE GO FOR IT
+                damageEffect.contactPoint = contactPoint;
+
+                //  3. APPLY BLOCKED CHARACTER DAMAGE TO TARGET
+                damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
+            }
+        }
+
+        protected virtual void GetBlockingDotValues(CharacterManager damageTarget)
+        {
+            directionFromAttackToDamageTarget = transform.position - damageTarget.transform.position;
+            dotValueFromAttackToDamageTarget = Vector3.Dot(directionFromAttackToDamageTarget, damageTarget.transform.forward);
         }
 
         protected virtual void DamageTarget(CharacterManager damageTarget)
@@ -57,8 +101,8 @@ namespace EldenRing.NT {
             damageEffect.fireDamage = fireDamage;
             damageEffect.lightningDamage = lightningDamage;
             damageEffect.holyDamage = holyDamage;
+            damageEffect.poiseDamage = poiseDamage;
             damageEffect.contactPoint = contactPoint;
-
             damageTarget.characterEffectsManager.ProcessInstantEffect(damageEffect);
         }
 

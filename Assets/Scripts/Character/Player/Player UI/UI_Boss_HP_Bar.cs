@@ -13,7 +13,7 @@ namespace EldenRing.NT
         {
             aiBossCharacter = boss;
             aiBossCharacter.aiCharacterNetworkManager.currentHealth.OnValueChanged += OnBossHPChanged;
-            SetMaxStat(aiBossCharacter.characterNetworkManager.maxHealth.Value);
+            SetMaxStat(aiBossCharacter.aiCharacterNetworkManager.maxHealth.Value);
             SetStat(aiBossCharacter.aiCharacterNetworkManager.currentHealth.Value);
             GetComponentInChildren<TextMeshProUGUI>().text = aiBossCharacter.characterName;
         }

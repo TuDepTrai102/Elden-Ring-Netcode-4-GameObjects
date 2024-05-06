@@ -7,6 +7,13 @@ namespace EldenRing.NT
 {
     public class PlayerUIPopUpManager : MonoBehaviour
     {
+        [Header("MESSAGE POP UP")]
+        [SerializeField] GameObject popUpMessageGameObject;
+        [SerializeField] TextMeshProUGUI popUpMessageText;
+
+        //  IF YOU PLAN ON MAKING ALL OF THESE POPUPS FUNCTION IDENTICALLY, YOU COULD JUST MAKE 1 POP UP GAMEOBJECT
+        //  AND CHANGE THE TEXT VALUES AS NEEDED
+        //  INSTEAD OF MAKING SERVERAL DIFFERENT GROUPS FOR POP UP FUNCTIONALLY
         [Header("YOU DIED POP UP")]
         [SerializeField] GameObject youDiedPopUpGameObject;
         [SerializeField] TextMeshProUGUI youDiedPopUpBackgroundText;
@@ -18,6 +25,26 @@ namespace EldenRing.NT
         [SerializeField] TextMeshProUGUI bossDefeatedPopUpBackgroundText;
         [SerializeField] TextMeshProUGUI bossDefeatedPopUpText;
         [SerializeField] CanvasGroup bossDefeatedPopUpCanvasGroup;   //  ALLOWS US TO SET THE ALPHA FADE OVER TIME
+
+        [Header("GRACE RESTORED POP UP")]
+        [SerializeField] GameObject graceRestoredPopUpGameObject;
+        [SerializeField] TextMeshProUGUI graceRestoredPopUpBackgroundText;
+        [SerializeField] TextMeshProUGUI graceRestoredPopUpText;
+        [SerializeField] CanvasGroup graceRestoredPopUpCanvasGroup;   //  ALLOWS US TO SET THE ALPHA FADE OVER TIME
+
+        public void CloseAllPopUpWindows()
+        {
+            popUpMessageGameObject.SetActive(false);
+
+            PlayerUIManager.instance.popUpWindowIsOpen = false;
+        }
+
+        public void SendPlayerMessagePopUp(string messageText)
+        {
+            PlayerUIManager.instance.popUpWindowIsOpen = true;
+            popUpMessageText.text = messageText;
+            popUpMessageGameObject.SetActive(true);
+        }
 
         public void SendYouDiedPopUp()
         {
@@ -39,6 +66,17 @@ namespace EldenRing.NT
             StartCoroutine(StretchPopUpTextOverTime(bossDefeatedPopUpBackgroundText, 8, 19f));
             StartCoroutine(FadeInPopUpOverTime(bossDefeatedPopUpCanvasGroup, 5));
             StartCoroutine(WaitThenFadeOutPopUpOverTime(bossDefeatedPopUpCanvasGroup, 2, 5));
+        }
+
+        public void SendGraceRestoredPopUp(string graceRestoredMessage)
+        {
+            graceRestoredPopUpText.text = graceRestoredMessage;
+            graceRestoredPopUpBackgroundText.text = graceRestoredMessage;
+            graceRestoredPopUpGameObject.SetActive(true);
+            graceRestoredPopUpBackgroundText.characterSpacing = 0;
+            StartCoroutine(StretchPopUpTextOverTime(graceRestoredPopUpBackgroundText, 8, 19f));
+            StartCoroutine(FadeInPopUpOverTime(graceRestoredPopUpCanvasGroup, 5));
+            StartCoroutine(WaitThenFadeOutPopUpOverTime(graceRestoredPopUpCanvasGroup, 2, 5));
         }
 
         private IEnumerator StretchPopUpTextOverTime(TextMeshProUGUI text, float duration, float stretchAmount)

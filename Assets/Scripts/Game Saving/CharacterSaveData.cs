@@ -32,12 +32,16 @@ namespace EldenRing.NT
         public int vitality;
         public int endurance;
 
+        [Header("SITE OF GRACE")]
+        public SerializableDictionary<int, bool> sitesOfGrace;      //  THE INT IS THE SITE OF GRACE I.D, THE BOOL IS "ACTIVATED" STATUS
+
         [Header("BOSSES")]
         public SerializableDictionary<int, bool> boosesAwakened;    //  THE INT IS THE BOSS I.D, THE BOOL IS AWAKENED STATUS
         public SerializableDictionary<int, bool> boosesDefeated;    //  THE INT IS THE BOSS I.D, THE BOOL IS DEFEATED STATUS
 
         public CharacterSaveData()
         {
+            sitesOfGrace = new SerializableDictionary<int, bool>();
             boosesAwakened = new SerializableDictionary<int, bool>();
             boosesDefeated = new SerializableDictionary<int, bool>();
         }

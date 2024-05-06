@@ -9,7 +9,8 @@ namespace EldenRing.NT
         PlayerManager player;
 
         public WeaponModelInstantiationSlot rightHandSlot;
-        public WeaponModelInstantiationSlot leftHandSlot;
+        public WeaponModelInstantiationSlot leftHandWeaponSlot;
+        public WeaponModelInstantiationSlot leftHandShieldSlot;
 
         [SerializeField] WeaponManager rightWeaponManager;
         [SerializeField] WeaponManager leftWeaponManager;
@@ -43,9 +44,13 @@ namespace EldenRing.NT
                 {
                     rightHandSlot = weaponSlot;
                 }
-                else if (weaponSlot.weaponSlot == WeaponModelSlot.LeftHand)
+                else if (weaponSlot.weaponSlot == WeaponModelSlot.LeftHandWeaponSlot)
                 {
-                    leftHandSlot = weaponSlot;
+                    leftHandWeaponSlot = weaponSlot;
+                }
+                else if (weaponSlot.weaponSlot == WeaponModelSlot.LeftHandShieldSlot)
+                {
+                    leftHandShieldSlot = weaponSlot;
                 }
             }
         }
@@ -145,7 +150,7 @@ namespace EldenRing.NT
                 rightHandSlot.LoadWeapon(rightHandWeaponModel);
                 rightWeaponManager = rightHandWeaponModel.GetComponent<WeaponManager>();
                 rightWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentRightHandWeapon);
-                //  ASIGN WEAPONS DMG, TO IT'S COLLIDER
+                player.playerAnimatorManager.UpdateAnimatorController(player.playerInventoryManager.currentRightHandWeapon.weaponAnimator);
             }
         }
 
@@ -231,14 +236,29 @@ namespace EldenRing.NT
             if (player.playerInventoryManager.currentLeftHandWeapon != null)
             {
                 //  REMOVE THE OLD WEAPON
-                leftHandSlot.UnloadWeapon();
+                if (leftHandWeaponSlot.currentWeaponModel != null)
+                    leftHandWeaponSlot.UnloadWeapon();
+
+                if (leftHandShieldSlot.currentWeaponModel != null)
+                    leftHandShieldSlot.UnloadWeapon();
 
                 //  BRING IN THE NEW WEAPON
                 leftHandWeaponModel = Instantiate(player.playerInventoryManager.currentLeftHandWeapon.weaponModel);
-                leftHandSlot.LoadWeapon(leftHandWeaponModel);
+
+                switch (player.playerInventoryManager.currentLeftHandWeapon.weaponModelType)
+                {
+                    case WeaponModelType.Weapon:
+                        leftHandWeaponSlot.LoadWeapon(leftHandWeaponModel);
+                        break;
+                    case WeaponModelType.Shield:
+                        leftHandShieldSlot.LoadWeapon(leftHandWeaponModel);
+                        break;
+                    default:
+                        break;
+                }
+
                 leftWeaponManager = leftHandWeaponModel.GetComponent<WeaponManager>();
                 leftWeaponManager.SetWeaponDamage(player, player.playerInventoryManager.currentLeftHandWeapon);
-                //  ASSIGN WEAPON DMG, TO IT'S COLLIDE
             }
         }
 

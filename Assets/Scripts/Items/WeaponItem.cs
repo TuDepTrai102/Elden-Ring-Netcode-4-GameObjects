@@ -6,7 +6,11 @@ namespace EldenRing.NT
 {
     public class WeaponItem : Item
     {
-        //  ANIMATOR CONTROLLER OVERRIDE (Change attack aniamations based on weapon you are currently using)
+        [Header("ANIMATIONS")]
+        public AnimatorOverrideController weaponAnimator;
+
+        [Header("MODEL INSTANTIATION")]
+        public WeaponModelType weaponModelType;
 
         [Header("WEAPON MODEL")]
         public GameObject weaponModel;
@@ -50,14 +54,24 @@ namespace EldenRing.NT
         public float rollingAttackStaminaCostMultiplier = 1.1f;
         public float backstepAttackStaminaCostMultiplier = 1.1f;
 
+        [Header("WEAPON BLOCKING ABSORPTIONS")]
+        public float physicalBaseDamageAbsorption = 50;
+        public float magicBaseDamageAbsorption = 50;
+        public float fireBaseDamageAbsorption = 50;
+        public float holyBaseDamageAbsorption = 50;
+        public float lightningBaseDamageAbsorption = 50;
+        public float stability = 50;    // REDUCES STAMINA LOST FROM BLOCK 
+
         [Header("ACTIONS")]
         public WeaponItemAction oh_RB_Action;   //  ONE HANDED RIGHT BUMPER ACTION
         public WeaponItemAction oh_RT_Action;   //  ONE HANDED RIGHT TRIGGER ACTION
+        public WeaponItemAction oh_LB_Action;   //  ONE HANDED LEFT BUMPER ACTION
 
         //  ASH OF WAR
 
         //  BLOCKING SOUNDS
-        [Header("WHOOSHES SFX")]
+        [Header("SFX")]
         public AudioClip[] whooshes;
+        public AudioClip[] blocking;
     }
 }

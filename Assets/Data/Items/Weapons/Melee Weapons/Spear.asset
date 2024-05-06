@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8bb57f4ebc339f46a6838a3ba29a6af, type: 3}
+  m_Name: Spear
+  m_EditorClassIdentifier: 
+  itemName: Spear
+  itemIcon: {fileID: 0}
+  itemDescription: A spear.
+  itemID: 3
+  weaponAnimator: {fileID: 22100000, guid: 5d070727e54f5bf4584bfde6126d11e2, type: 2}
+  weaponModelType: 0
+  weaponModel: {fileID: 1883087188949415673, guid: 11810c8fbc61e4349ace47004d33fac0, type: 3}
+  strengthREQ: 10
+  dexREQ: 10
+  intREQ: 0
+  faithREQ: 0
+  physicalDamage: 118
+  magicDamage: 0
+  fireDamage: 0
+  holyDamage: 0
+  lightningDamage: 0
+  poiseDamage: 25
+  light_Attack_01_Modifier: 1.1
+  light_Attack_02_Modifier: 1.2
+  heavy_Attack_01_Modifier: 1.4
+  heavy_Attack_02_Modifier: 1.6
+  charge_Attack_01_Modifier: 2
+  charge_Attack_02_Modifier: 2.2
+  running_Attack_01_Modifier: 1.1
+  rolling_Attack_01_Modifier: 1.1
+  backstep_attack_01_Modifier: 1.1
+  baseStaminaCost: 20
+  lightAttackStaminaCostMultiplier: 0.9
+  heavyAttackStaminaCostMultiplier: 1.3
+  chargedAttackStaminaCostMultiplier: 1.5
+  runningAttackStaminaCostMultiplier: 1.1
+  rollingAttackStaminaCostMultiplier: 1.1
+  backstepAttackStaminaCostMultiplier: 1.1
+  physicalBaseDamageAbsorption: 50
+  magicBaseDamageAbsorption: 50
+  fireBaseDamageAbsorption: 50
+  holyBaseDamageAbsorption: 50
+  lightningBaseDamageAbsorption: 50
+  stability: 50
+  oh_RB_Action: {fileID: 11400000, guid: 6008a70d2378db34bb0a0d52f26d3630, type: 2}
+  oh_RT_Action: {fileID: 11400000, guid: b805d05c046720145a838fef2efea0ba, type: 2}
+  oh_LB_Action: {fileID: 11400000, guid: bdfc635e6e835364d96cd9b3d4fc05bf, type: 2}
+  whooshes:
+  - {fileID: 8300000, guid: 4d4ed56c6f2f3e44a82cfcba491aeb7b, type: 3}
+  - {fileID: 8300000, guid: d00a4ea2f8c9fd14da8234cc5a53bb67, type: 3}
+  - {fileID: 8300000, guid: 18b23fb06b3ddeb4ab94095ae36f7afc, type: 3}
+  - {fileID: 8300000, guid: 9c89ef6104e38234c815fff0bd923686, type: 3}
+  - {fileID: 8300000, guid: 5fd5d995ff41973498365c04bd2a3656, type: 3}
+  - {fileID: 8300000, guid: b4748e2eb0192a44fb52a413d12f33aa, type: 3}

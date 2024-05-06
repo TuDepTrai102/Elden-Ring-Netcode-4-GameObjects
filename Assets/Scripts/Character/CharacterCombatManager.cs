@@ -23,6 +23,7 @@ namespace EldenRing.NT {
         [Header("ATTACK FLAGS")]
         public bool canPerformRollingAttack = false;
         public bool canPerformBackstepAttack = false;
+        public bool canBlock = true;
 
         protected virtual void Awake()
         {

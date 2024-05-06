@@ -103,7 +103,7 @@ namespace EldenRing.NT
 
             if (!hasBeenAwakened.Value)
             {
-                characterAnimatorManager.PlayTargetActionAnimation(sleepAnimation, true);
+                animator.Play(sleepAnimation);
             }
         }
 

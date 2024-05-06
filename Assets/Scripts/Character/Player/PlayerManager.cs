@@ -15,6 +15,7 @@ namespace EldenRing.NT
         [HideInInspector] public PlayerInventoryManager playerInventoryManager;
         [HideInInspector] public PlayerEquipmentManager playerEquipmentManager;
         [HideInInspector] public PlayerCombatManager playerCombatManager;
+        [HideInInspector] public PlayerInteractionManager playerInteractionManager;
 
         protected override void Awake()
         {
@@ -28,6 +29,7 @@ namespace EldenRing.NT
             playerInventoryManager = GetComponent<PlayerInventoryManager>();
             playerEquipmentManager = GetComponent<PlayerEquipmentManager>();
             playerCombatManager = GetComponent<PlayerCombatManager>();
+            playerInteractionManager = GetComponent<PlayerInteractionManager>();
         }
 
         protected override void Update()
@@ -55,6 +57,16 @@ namespace EldenRing.NT
             PlayerCamera.instance.HandleAllCameraActions();
         }
 
+        protected override void OnEnable()
+        {
+            base.OnEnable();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+        }
+
         public override void OnNetworkSpawn()
         {
             base.OnNetworkSpawn();
@@ -78,6 +90,10 @@ namespace EldenRing.NT
                 playerNetworkManager.currentStamina.OnValueChanged += playerStatsManager.ResetStaminaRegenTimer;
             }
 
+            //  ONLY UPDATE FLOATING HP BAR IF THIS CHARACTER IS NOT THE LOCAL PLAYERS CHARACTER (YOU DON'T WANNA SEE A HP BAR FLOATING ABOVE YOUR OWN HEAD)
+            if (!IsOwner)
+                characterNetworkManager.currentHealth.OnValueChanged += characterUIManager.OnHPChanged;
+
             //  STATS
             playerNetworkManager.currentHealth.OnValueChanged += playerNetworkManager.CheckHP;
 
@@ -89,6 +105,7 @@ namespace EldenRing.NT
             playerNetworkManager.currentRightHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentRightHandWeaponIDChange;
             playerNetworkManager.currentLeftHandWeaponID.OnValueChanged += playerNetworkManager.OnCurrentLeftHandWeaponIDChange;
             playerNetworkManager.currentWeaponBeingUsed.OnValueChanged += playerNetworkManager.OnCurrentWeaponBeingUsedIDChange;
+            playerNetworkManager.isBlocking.OnValueChanged += playerNetworkManager.OnIsBlockingChanged;
 
             //  FLAGS
             playerNetworkManager.isChargingAttack.OnValueChanged += playerNetworkManager.OnIsChargingAttackChanged;
@@ -120,6 +137,9 @@ namespace EldenRing.NT
                 playerNetworkManager.currentStamina.OnValueChanged -= playerStatsManager.ResetStaminaRegenTimer;
             }
 
+            if (!IsOwner)
+                characterNetworkManager.currentHealth.OnValueChanged -= characterUIManager.OnHPChanged;
+
             //  STATS
             playerNetworkManager.currentHealth.OnValueChanged -= playerNetworkManager.CheckHP;
 
@@ -131,6 +151,7 @@ namespace EldenRing.NT
             playerNetworkManager.currentRightHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentRightHandWeaponIDChange;
             playerNetworkManager.currentLeftHandWeaponID.OnValueChanged -= playerNetworkManager.OnCurrentLeftHandWeaponIDChange;
             playerNetworkManager.currentWeaponBeingUsed.OnValueChanged -= playerNetworkManager.OnCurrentWeaponBeingUsedIDChange;
+            playerNetworkManager.isBlocking.OnValueChanged -= playerNetworkManager.OnIsBlockingChanged;
 
             //  FLAGS
             playerNetworkManager.isChargingAttack.OnValueChanged -= playerNetworkManager.OnIsChargingAttackChanged;
@@ -224,7 +245,10 @@ namespace EldenRing.NT
             //  SYNC WEAPONS
             playerNetworkManager.OnCurrentRightHandWeaponIDChange(0, playerNetworkManager.currentRightHandWeaponID.Value);
             playerNetworkManager.OnCurrentLeftHandWeaponIDChange(0, playerNetworkManager.currentLeftHandWeaponID.Value);
-        
+
+            //  SYNC BLOCK STATUS
+            playerNetworkManager.OnIsBlockingChanged(false, playerNetworkManager.isBlocking.Value);
+
             //  ARMOR
 
             //  LOCK ON

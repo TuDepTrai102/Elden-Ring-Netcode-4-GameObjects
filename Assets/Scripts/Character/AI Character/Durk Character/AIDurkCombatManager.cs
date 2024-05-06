@@ -15,6 +15,7 @@ namespace EldenRing.NT
 
         [Header("DAMAGE")]
         [SerializeField] int baseDamage = 25;
+        [SerializeField] int basePoiseDamage = 25;
         [SerializeField] float attack01DamageModifier = 1.0f;
         [SerializeField] float attack02DamageModifier = 1.4f;
         [SerializeField] float attack03DamageModifier = 1.6f;
@@ -34,18 +35,21 @@ namespace EldenRing.NT
         {
             aiCharacter.characterSoundFXManager.PlayAttackGruntSoundFX();
             clubDamageCollider.physicalDamage = baseDamage * attack01DamageModifier;
+            clubDamageCollider.poiseDamage = basePoiseDamage * attack01DamageModifier;
         }
 
         public void SetAttack02Damage()
         {
             aiCharacter.characterSoundFXManager.PlayAttackGruntSoundFX();
             clubDamageCollider.physicalDamage = baseDamage * attack02DamageModifier;
+            clubDamageCollider.poiseDamage = basePoiseDamage * attack02DamageModifier;
         }
 
         public void SetAttack03Damage()
         {
             aiCharacter.characterSoundFXManager.PlayAttackGruntSoundFX();
             clubDamageCollider.physicalDamage = baseDamage * attack03DamageModifier;
+            clubDamageCollider.poiseDamage = basePoiseDamage * attack03DamageModifier;
         }
 
         public void OpenClubDamageCollider()

@@ -18,8 +18,10 @@ namespace EldenRing.NT
         [HideInInspector] public CharacterEffectsManager characterEffectsManager;
         [HideInInspector] public CharacterAnimatorManager characterAnimatorManager;
         [HideInInspector] public CharacterCombatManager characterCombatManager;
+        [HideInInspector] public CharacterStatsManager characterStatsManager;
         [HideInInspector] public CharacterSoundFXManager characterSoundFXManager;
         [HideInInspector] public CharacterLocomotionManager characterLocomotionManager;
+        [HideInInspector] public CharacterUIManager characterUIManager;
 
         [Header("CHARACTER GROUP")]
         public CharacterGroup characterGroup;
@@ -37,8 +39,10 @@ namespace EldenRing.NT
             characterEffectsManager = GetComponent<CharacterEffectsManager>();
             characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
             characterCombatManager = GetComponent<CharacterCombatManager>();
+            characterStatsManager = GetComponent<CharacterStatsManager>();
             characterSoundFXManager = GetComponent<CharacterSoundFXManager>();
             characterLocomotionManager = GetComponent<CharacterLocomotionManager>();
+            characterUIManager = GetComponent<CharacterUIManager>();
         }
 
         protected virtual void Start()
@@ -82,6 +86,16 @@ namespace EldenRing.NT
         }
 
         protected virtual void LateUpdate()
+        {
+
+        }
+
+        protected virtual void OnEnable()
+        {
+
+        }
+
+        protected virtual void OnDisable()
         {
 
         }

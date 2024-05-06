@@ -1,0 +1,62 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8bb57f4ebc339f46a6838a3ba29a6af, type: 3}
+  m_Name: Medium Shield
+  m_EditorClassIdentifier: 
+  itemName: Medium Shield
+  itemIcon: {fileID: 0}
+  itemDescription: A medium Shield.
+  itemID: 4
+  weaponAnimator: {fileID: 22100000, guid: 02522f48ad70b97438d90d915bfd4b6d, type: 2}
+  weaponModelType: 1
+  weaponModel: {fileID: 1883087188949415673, guid: 9de6e74c656d52742b0a037194bbd799, type: 3}
+  strengthREQ: 10
+  dexREQ: 10
+  intREQ: 0
+  faithREQ: 0
+  physicalDamage: 77
+  magicDamage: 0
+  fireDamage: 0
+  holyDamage: 0
+  lightningDamage: 0
+  poiseDamage: 25
+  light_Attack_01_Modifier: 1
+  light_Attack_02_Modifier: 1.2
+  heavy_Attack_01_Modifier: 1.4
+  heavy_Attack_02_Modifier: 1.6
+  charge_Attack_01_Modifier: 2
+  charge_Attack_02_Modifier: 2.2
+  running_Attack_01_Modifier: 1.1
+  rolling_Attack_01_Modifier: 1.1
+  backstep_attack_01_Modifier: 1.1
+  baseStaminaCost: 20
+  lightAttackStaminaCostMultiplier: 1
+  heavyAttackStaminaCostMultiplier: 1.3
+  chargedAttackStaminaCostMultiplier: 1.5
+  runningAttackStaminaCostMultiplier: 1.1
+  rollingAttackStaminaCostMultiplier: 1.1
+  backstepAttackStaminaCostMultiplier: 1.1
+  physicalBaseDamageAbsorption: 100
+  magicBaseDamageAbsorption: 75
+  fireBaseDamageAbsorption: 85
+  holyBaseDamageAbsorption: 75
+  lightningBaseDamageAbsorption: 75
+  stability: 66
+  oh_RB_Action: {fileID: 11400000, guid: 6008a70d2378db34bb0a0d52f26d3630, type: 2}
+  oh_RT_Action: {fileID: 11400000, guid: b805d05c046720145a838fef2efea0ba, type: 2}
+  oh_LB_Action: {fileID: 11400000, guid: bdfc635e6e835364d96cd9b3d4fc05bf, type: 2}
+  whooshes: []
+  blocking:
+  - {fileID: 8300000, guid: f290051f770c7eb4480b94e38f2a93fb, type: 3}
+  - {fileID: 8300000, guid: 4baf3e34b7df8ba498e6725a455df070, type: 3}
+  - {fileID: 8300000, guid: 956c5da74ded6e34f904ce73da916f8e, type: 3}
+  - {fileID: 8300000, guid: 03d98709bc8a29d4088c26aa8783dc01, type: 3}

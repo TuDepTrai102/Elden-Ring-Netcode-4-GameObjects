@@ -15,6 +15,10 @@ namespace EldenRing.NT
         [HideInInspector] public PlayerUIHudManager playerUIHudManager;
         [HideInInspector] public PlayerUIPopUpManager playerUIPopUpManager;
 
+        [Header("UI FLAGS")]
+        public bool menuWindowIsOpen = false;       //  INVENTORY SCREEN, EQUIPMENT MENU, BACKSMITH MENU ETC...
+        public bool popUpWindowIsOpen = false;      //  ITEM PICK UP, DIALOGUE POP UP ETC...
+
         private void Awake()
         {
             if (instance == null)

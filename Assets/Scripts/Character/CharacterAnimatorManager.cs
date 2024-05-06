@@ -18,15 +18,28 @@ namespace EldenRing.NT
         [Header("DAMAGE ANIMATIONS")]
         public string lastDamageAnimationPlayed;
 
+        //  PING HIT REACTIONS
+        [SerializeField] string hit_Forward_Ping_01 = "Hit_Forward_Ping_01";
+        [SerializeField] string hit_Forward_Ping_02 = "Hit_Forward_Ping_02";
+        [SerializeField] string hit_Backward_Ping_01 = "Hit_Backward_Ping_01";
+        [SerializeField] string hit_Backward_Ping_02 = "Hit_Backward_Ping_02";
+        [SerializeField] string hit_Left_Ping_01 = "Hit_Left_Ping_01";
+        [SerializeField] string hit_Left_Ping_02 = "Hit_Left_Ping_02";
+        [SerializeField] string hit_Right_Ping_01 = "Hit_Right_Ping_01";
+        [SerializeField] string hit_Right_Ping_02 = "Hit_Right_Ping_02";
+
+        public List<string> forward_Ping_Damage = new List<string>();
+        public List<string> backward_Ping_Damage = new List<string>();
+        public List<string> left_Ping_Damage = new List<string>();
+        public List<string> right_Ping_Damage = new List<string>();
+
+        //  MEDIUM HIT REACTIONS
         [SerializeField] string hit_Forward_Medium_01 = "Hit_Forward_Medium_01";
         [SerializeField] string hit_Forward_Medium_02 = "Hit_Forward_Medium_02";
-
         [SerializeField] string hit_Backward_Medium_01 = "Hit_Backward_Medium_01";
         [SerializeField] string hit_Backward_Medium_02 = "Hit_Backward_Medium_02";
-
         [SerializeField] string hit_Left_Medium_01 = "Hit_Left_Medium_01";
         [SerializeField] string hit_Left_Medium_02 = "Hit_Left_Medium_02";
-
         [SerializeField] string hit_Right_Medium_01 = "Hit_Right_Medium_01";
         [SerializeField] string hit_Right_Medium_02 = "Hit_Right_Medium_02";
 
@@ -45,15 +58,23 @@ namespace EldenRing.NT
 
         protected virtual void Start()
         {
+            //  PING HIT REACTIONS
+            forward_Ping_Damage.Add(hit_Forward_Ping_01);
+            forward_Ping_Damage.Add(hit_Forward_Ping_02);
+            backward_Ping_Damage.Add(hit_Backward_Ping_01);
+            backward_Ping_Damage.Add(hit_Backward_Ping_02);
+            left_Ping_Damage.Add(hit_Left_Ping_01);
+            left_Ping_Damage.Add(hit_Left_Ping_02);
+            right_Ping_Damage.Add(hit_Right_Ping_01);
+            right_Ping_Damage.Add(hit_Right_Ping_02);
+
+            //  MEDIUM HIT REACTIONS
             forward_Medium_Damage.Add(hit_Forward_Medium_01);
             forward_Medium_Damage.Add(hit_Forward_Medium_02);
-
             backward_Medium_Damage.Add(hit_Backward_Medium_01);
             backward_Medium_Damage.Add(hit_Backward_Medium_02);
-
             left_Medium_Damage.Add(hit_Left_Medium_01);
             left_Medium_Damage.Add(hit_Left_Medium_02);
-
             right_Medium_Damage.Add(hit_Right_Medium_01);
             right_Medium_Damage.Add(hit_Right_Medium_02);
         }
@@ -173,6 +194,7 @@ namespace EldenRing.NT
         }
 
         public virtual void PlayTargetAttackActionAnimation(
+            WeaponItem weapon,
             AttackType attackType,
             string targetAnimation,
             bool isPerformingAction,
@@ -187,6 +209,7 @@ namespace EldenRing.NT
             //  TELL THE NETWORK OUR "ISATTACKING" FLAG IS ACTIVE (FOR COUNTER DAMAGE, ETC)
             character.characterCombatManager.currentAttackType = attackType;
             character.characterCombatManager.lastAttackAnimationPerformed = targetAnimation;
+            UpdateAnimatorController(weapon.weaponAnimator);
             this.applyRootMotion = applyRootMotion;
             character.animator.CrossFade(targetAnimation, 0.2f);
             character.isPerformingAction = isPerformingAction;
@@ -196,6 +219,11 @@ namespace EldenRing.NT
             //  TELL THE SERVER/HOST WE PLAYERD AN ANIMATION, AND TO PLAY THAT ANIMATION FOR EVERYBODY ELSE PRESENT
             character.characterNetworkManager.NotifyTheServerOfAttackActionAnimationServerRpc
                 (NetworkManager.Singleton.LocalClientId, targetAnimation, applyRootMotion);
+        }
+
+        public void UpdateAnimatorController(AnimatorOverrideController weaponController)
+        {
+            character.animator.runtimeAnimatorController = weaponController;
         }
     }
 }

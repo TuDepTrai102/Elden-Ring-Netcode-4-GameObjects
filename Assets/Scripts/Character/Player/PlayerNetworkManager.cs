@@ -88,6 +88,28 @@ namespace EldenRing.NT
         {
             WeaponItem newWeapon = Instantiate(WorldItemDatabase.instance.GetWeaponByID(newID));
             player.playerCombatManager.currentWeaponBeingUsed = newWeapon;
+
+            //  WE DONT NEED TO RUN THIS CODE IF WE ARE THE OWNER BECAUSE WE'VE ALREADY DONE SO LOCALLY
+            if (player.IsOwner)
+                return;
+
+            if (player.playerCombatManager.currentWeaponBeingUsed != null)
+                player.playerAnimatorManager.UpdateAnimatorController(player.playerCombatManager.currentWeaponBeingUsed.weaponAnimator);
+        }
+
+        public override void OnIsBlockingChanged(bool oldStatus, bool newStatus)
+        {
+            base.OnIsBlockingChanged(oldStatus, newStatus);
+
+            if (IsOwner)
+            {
+                player.playerStatsManager.blockingPhysicalAbsorption = player.playerCombatManager.currentWeaponBeingUsed.physicalBaseDamageAbsorption;
+                player.playerStatsManager.blockingMagicAbsorption = player.playerCombatManager.currentWeaponBeingUsed.magicBaseDamageAbsorption;
+                player.playerStatsManager.blockingFireAbsorption = player.playerCombatManager.currentWeaponBeingUsed.fireBaseDamageAbsorption;
+                player.playerStatsManager.blockingHolyAbsorption = player.playerCombatManager.currentWeaponBeingUsed.holyBaseDamageAbsorption;
+                player.playerStatsManager.blockingLightningAbsorption = player.playerCombatManager.currentWeaponBeingUsed.lightningBaseDamageAbsorption;
+                player.playerStatsManager.blockingStability = player.playerCombatManager.currentWeaponBeingUsed.stability;
+            }
         }
 
         //  ITEM ACTIONS

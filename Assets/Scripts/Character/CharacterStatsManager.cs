@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Globalization;
 using UnityEngine;
 
 namespace EldenRing.NT
@@ -15,6 +14,21 @@ namespace EldenRing.NT
         private float staminaTickTimer = 0;
         [SerializeField] float staminaRegenerationDelay = 2;
 
+        [Header("BLOCKING ABSORPTIONS")]
+        public float blockingPhysicalAbsorption = 0;
+        public float blockingFireAbsorption = 0;
+        public float blockingMagicAbsorption = 0;
+        public float blockingLightningAbsorption = 0;
+        public float blockingHolyAbsorption = 0;
+        public float blockingStability = 0;
+
+        [Header("POISE")]
+        public float totalPoiseDamage = 0;          //  HOW MUCH POISE DAMAGE WE HAVE TAKEN
+        public float offensivePoiseBonus = 0;       //  THE POISE BONUS GAINED FROM USING WEAPONS (HEAVY WEAPONS HAVE A MUCH LARGER BONUS)
+        public float basePoiseDefense = 0;          //  THE POISE BONUS GAINED FROM ARMOR/TALISMANS ETC, ETC...
+        public float defaultPoiseResetTime = 8;     //  THE TIME IT TAKES FOR POISE DAMAGE TO RESET (MUST NOT BE HIT IN THE TIME OR IT WILL RESET)
+        public float poiseResetTimer = 0;           //  THE CURRENT TIMER FOR POISE RESET
+
         protected virtual void Awake()
         {
             character = GetComponent<CharacterManager>();
@@ -23,6 +37,11 @@ namespace EldenRing.NT
         protected virtual void Start()
         {
 
+        }
+
+        protected virtual void Update()
+        {
+            HandlePoiseResetTimer();
         }
 
         public int CalculateHealthBasedOnVitalityLevel(int vitality)
@@ -82,6 +101,18 @@ namespace EldenRing.NT
             if (currentStaminaAmount < previousStaminaAmount)
             {
                 staminaRegenerationTimer = 0;
+            }
+        }
+
+        protected virtual void HandlePoiseResetTimer()
+        {
+            if (poiseResetTimer > 0)
+            {
+                poiseResetTimer -= Time.deltaTime;
+            }
+            else
+            {
+                totalPoiseDamage = 0;
             }
         }
     }

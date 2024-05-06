@@ -36,9 +36,11 @@ namespace EldenRing.NT
         [SerializeField] bool jump_Input = false;                   //  TAP SPACE (KEY BOARD) / BUTTON SOUTH (GAME PAD)
         [SerializeField] bool switch_Right_Weapon_Input = false;    //  RIGHT ARROW (KEY BOARD) / D-PAD RIGHT (GAME PAD)
         [SerializeField] bool switch_Left_Weapon_Input = false;     //  LEFT ARROW (KEY BOARD) / D-PAD LEFT (GAME PAD)
+        [SerializeField] bool interaction_Input = false;
 
         [Header("BUMPER INPUTS")]
         [SerializeField] bool RB_Input = false;                     //  E (KEY BOARD) / RIGHT SHOULDER (GAME PAD)
+        [SerializeField] bool LB_Input = false;                     //  z (KEY BOARD) / LEFT SHOULDER (GAME PAD)
 
         [Header("TRIGGER INPUTS")]
         [SerializeField] bool RT_Input = false;                     //  Q (KEY BOARD) / RIGHT TRIGGER (GAME PAD)
@@ -117,9 +119,12 @@ namespace EldenRing.NT
                 playerControls.PlayerActions.Jump.performed += i => jump_Input = true;
                 playerControls.PlayerActions.SwitchRightWeapon.performed += i => switch_Right_Weapon_Input = true;
                 playerControls.PlayerActions.SwitchLeftWeapon.performed += i => switch_Left_Weapon_Input = true;
+                playerControls.PlayerActions.Interact.performed += i => interaction_Input = true;
 
                 //  BUMPERS
                 playerControls.PlayerActions.RB.performed += i => RB_Input = true;
+                playerControls.PlayerActions.LB.performed += i => LB_Input = true;
+                playerControls.PlayerActions.LB.canceled += i => player.playerNetworkManager.isBlocking.Value = false;
 
                 //  TRIGGERS
                 playerControls.PlayerActions.RT.performed += i => RT_Input = true;
@@ -181,11 +186,13 @@ namespace EldenRing.NT
             HandleSprintInput();
             HandleJumpInput();
             HandleRBInput();
+            HandleLBInput();
             HandleRTInput();
             HandleChargeRTInput();
             HandleSwitchRightWeaponInput();
             HandleSwitchLeftWeaponInput();
             HandleQuedInputs();
+            HandleInteractionInput();
         }
 
         //  LOCK ON
@@ -380,6 +387,22 @@ namespace EldenRing.NT
             }
         }
 
+        private void HandleLBInput()
+        {
+            if (LB_Input)
+            {
+                LB_Input = false;
+
+                //  TODO: IF WE HAVE A UI WINDOW OPEN, RETURN AND DO NOTHING
+
+                player.playerNetworkManager.SetCharacterActionHand(false);
+
+                //  TODO: IF WE HAVE TWO HANDING THE WEAPON, USE THE TWO HANDED ACTION
+
+                player.playerCombatManager.PerformWeaponBasedAction(player.playerInventoryManager.currentLeftHandWeapon.oh_LB_Action, player.playerInventoryManager.currentLeftHandWeapon);
+            }
+        }
+
         private void HandleRTInput()
         {
             if (RT_Input)
@@ -423,6 +446,16 @@ namespace EldenRing.NT
             {
                 switch_Left_Weapon_Input = false;
                 player.playerEquipmentManager.SwitchLeftWeapon();
+            }
+        }
+
+        private void HandleInteractionInput()
+        {
+            if (interaction_Input)
+            {
+                interaction_Input = false;
+
+                player.playerInteractionManager.Interact();
             }
         }
 
